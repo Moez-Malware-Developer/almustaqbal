@@ -165,7 +165,7 @@
 </div>
 
 <script>
-  // أنواع الأيقونات المختلفة
+  
   const iconTypes = [
     'fa-mobile-alt', 'fa-screwdriver', 'fa-battery-full',
     'fa-plug', 'fa-wrench', 'fa-microchip', 'fa-sim-card',
@@ -173,16 +173,16 @@
     'fa-laptop-code', 'fa-headphones-alt', 'fa-microscope', 'fa-bolt'
   ];
 
-  // عدد تكرارات كل أيقونة
+  
   const repeats = 5;
 
-  // إنشاء الأيقونات مع ضمان المسافة بينها
+  
   function createIcons() {
     const container = document.body;
     const icons = [];
-    const iconSize = 42; // 32px حجم الأيقونة + 10px margin
+    const iconSize = 42; 
     
-    // إنشاء شبكة افتراضية لتوزيع الأيقونات
+    
     const gridCols = Math.floor(window.innerWidth / iconSize);
     const gridRows = Math.floor(window.innerHeight / iconSize);
     const grid = Array(gridRows).fill().map(() => Array(gridCols).fill(false));
@@ -192,7 +192,7 @@
         const icon = document.createElement('i');
         icon.className = `fas ${iconType} icon`;
         
-        // البحث عن موقع فارغ في الشبكة
+       
         let row, col;
         let attempts = 0;
         const maxAttempts = 100;
@@ -205,9 +205,9 @@
         } while (grid[row][col] && attempts < maxAttempts);
         
         if (attempts < maxAttempts) {
-          grid[row][col] = true; // احتلال هذه الخلية
+          grid[row][col] = true; 
           
-          // حساب المواقع مع ضمان المسافات
+         
           const left = col * iconSize + (iconSize - 32) / 2;
           const top = row * iconSize + (iconSize - 32) / 2;
           
@@ -225,12 +225,12 @@
     });
   }
 
-  // عناصر DOM
+ 
   const countdownTimerElement = document.getElementById('countdownTimer');
   const progressBar = document.getElementById('progressBar');
   let seconds = 5;
 
-  // بدء العد التنازلي
+ 
   function startCountdown() {
     countdownTimerElement.classList.add('show');
     progressBar.style.width = '100%';
@@ -242,7 +242,7 @@
       if (seconds < 0) {
         clearInterval(timerInterval);
         countdownTimerElement.textContent = 'جارٍ التوجيه...';
-        // الانتقال إلى صفحة إدخال البيانات بعد انتهاء العد التنازلي
+        
         setTimeout(() => {
           window.location.href = "data-entry.html";
         }, 1000);
@@ -256,7 +256,7 @@
     setTimeout(startCountdown, 500);
   });
 
-  // إعادة توزيع الأيقونات عند تغيير حجم النافذة
+  
   window.addEventListener('resize', () => {
     const icons = document.querySelectorAll('.icon');
     icons.forEach(icon => icon.remove());
