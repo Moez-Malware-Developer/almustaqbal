@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>التقارير - إدارة الورش</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        body { 
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f3f4f6;
+            padding-top: 64px;
+        }
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+            background-color: #A20A0A;
+        }
+        @media (max-width: 1023px) {
+            #sidebar {
+                transform: translateX(100%);
+            }
+            #sidebar.open {
+                transform: translateX(0);
+            }
+        }
+        .sidebar-link {
+            transition: all 0.2s ease;
+        }
+        .sidebar-link:hover {
+            background-color: #C02020;
+        }
+        .accent-color {
+            color: #FF6347;
+        }
+        .bg-accent {
+            background-color: #FF6347;
+        }
+        .ring-accent {
+            --tw-ring-color: #ff9980;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <header class="fixed top-0 left-0 right-0 z-40 bg-white shadow-md p-4 flex items-center justify-between lg:justify-start lg:hidden">
+        <div class="flex items-center gap-4">
+            <button id="menuBtn" class="text-[#A20A0A] text-xl">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h2 class="text-xl font-bold text-gray-800">التقارير</h2>
+        </div>
+        <button id="closeAppBtn" class="text-gray-500 hover:text-gray-800 text-2xl lg:hidden">
+            <i class="fas fa-times"></i>
+        </button>
+    </header>
+
+    <aside id="sidebar" class="fixed inset-y-0 right-0 z-50 w-64 text-white shadow-lg lg:relative lg:translate-x-0 transform">
+    <div class="p-6">
+        <button id="closeSidebarBtn" class="absolute top-4 left-4 text-white text-xl lg:hidden">
+            <i class="fas fa-times"></i>
+        </button>
+        <h1 class="text-3xl font-bold mb-8 text-center border-b border-[#C02020] pb-4">إدارة الورش</h1>
+        <nav class="space-y-3">
+            <a href="index.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-tachometer-alt text-lg"></i>
+                <span>الرئيسية</span>
+            </a>
+            <a href="orders.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-boxes text-lg"></i>
+                <span>إدارة الطلبات</span>
+            </a>
+            <a href="technicians.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-users-cog text-lg"></i>
+                <span>إدارة الفنيين</span>
+            </a>
+            <a href="customers.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-users text-lg"></i>
+                <span>إدارة الزبائن</span>
+            </a>
+            <a href="products.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-tools text-lg"></i>
+                <span>المنتجات والخدمات</span>
+            </a>
+            <a href="accounting.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-wallet text-lg"></i>
+                <span>الإيرادات والمصاريف</span>
+            </a>
+            <a href="reports.html" class="flex items-center gap-4 p-3 rounded-lg bg-[#FF6347] text-[#A20A0A] font-semibold sidebar-link">
+                <i class="fas fa-chart-bar text-lg"></i>
+                <span>التقارير</span>
+            </a>
+            <a href="settings.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-cog text-lg"></i>
+                <span>الإعدادات</span>
+            </a>
+            <a href="#" id="logoutBtn" class="flex items-center gap-4 p-3 rounded-lg text-red-300 hover:text-red-100 hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-sign-out-alt text-lg"></i>
+                <span>تسجيل الخروج</span>
+            </a>
+        </nav>
+    </div>
+</aside>
+
+    <main class="flex-1 p-4 md:p-8">
+        <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold text-gray-800 flex items-center gap-2 mb-4 md:mb-0">
+                    <i class="fas fa-chart-bar accent-color"></i>
+                    <span>التقارير</span>
+                </h1>
+            </div>
+            
+            <div class="bg-gray-50 rounded-lg p-6 mb-8 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-700 mb-4">خيارات التقرير</h2>
+                <div class="flex flex-col md:flex-row items-center gap-4">
+                    <div class="w-full md:w-1/3">
+                        <label for="reportType" class="block text-sm font-medium text-gray-700">نوع التقرير</label>
+                        <select id="reportType" name="reportType" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-[#A20A0A] focus:border-[#A20A0A]">
+                            <option value="revenue">تقرير الإيرادات</option>
+                            <option value="technician-performance">تقرير أداء الفنيين</option>
+                            <option value="orders-status">تقرير حالة الطلبات</option>
+                        </select>
+                    </div>
+                    <div class="w-full md:w-1/3">
+                        <label for="startDate" class="block text-sm font-medium text-gray-700">من تاريخ</label>
+                        <input type="date" id="startDate" name="startDate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-[#A20A0A] focus:border-[#A20A0A]">
+                    </div>
+                    <div class="w-full md:w-1/3">
+                        <label for="endDate" class="block text-sm font-medium text-gray-700">إلى تاريخ</label>
+                        <input type="date" id="endDate" name="endDate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-[#A20A0A] focus:border-[#A20A0A]">
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button id="generateReportBtn" class="bg-[#A20A0A] text-white py-2 px-6 rounded-lg hover:bg-[#C02020] transition-colors duration-200 flex items-center gap-2">
+                        <i class="fas fa-file-alt"></i>
+                        <span>توليد التقرير</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="reportDisplayArea" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 min-h-[400px]">
+                <div class="text-center text-gray-400 py-20">
+                    <i class="fas fa-chart-line text-6xl mb-4"></i>
+                    <p class="text-lg">يرجى اختيار خيارات التقرير أعلاه لتوليد التقرير.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.getElementById('menuBtn');
+            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            const closeAppBtn = document.getElementById('closeAppBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            const generateReportBtn = document.getElementById('generateReportBtn');
+            const reportDisplayArea = document.getElementById('reportDisplayArea');
+            const reportTypeSelect = document.getElementById('reportType');
+            const startDateInput = document.getElementById('startDate');
+            const endDateInput = document.getElementById('endDate');
+
+            // وظيفة فتح/إغلاق القائمة الجانبية
+            menuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+            });
+            
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', () => {
+                    sidebar.classList.remove('open');
+                });
+            }
+
+            // وظيفة زر الإغلاق
+            if (closeAppBtn) {
+                closeAppBtn.addEventListener('click', () => {
+                    window.location.href = 'login.html';
+                });
+            }
+
+            // وظيفة تسجيل الخروج
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault(); 
+                    localStorage.removeItem('userToken'); 
+                    window.location.href = 'login.html';
+                });
+            }
+
+            // وظيفة توليد التقرير (مثال توضيحي)
+            generateReportBtn.addEventListener('click', () => {
+                const reportType = reportTypeSelect.value;
+                const startDate = startDateInput.value;
+                const endDate = endDateInput.value;
+                
+                // هنا سيتم استدعاء وظيفة من الواجهة الخلفية لتوليد التقرير
+                console.log(`تم طلب توليد تقرير من نوع: ${reportType} من تاريخ: ${startDate} إلى تاريخ: ${endDate}`);
+
+                // تحديث منطقة عرض التقرير بمحتوى وهمي
+                reportDisplayArea.innerHTML = `
+                    <div class="flex justify-between items-center border-b pb-4 mb-4">
+                        <h3 class="text-2xl font-bold text-gray-800">تقرير الإيرادات</h3>
+                        <p class="text-sm text-gray-500">الفترة: ${startDate || 'غير محدد'} إلى ${endDate || 'غير محدد'}</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase">الوصف</th>
+                                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase">النوع</th>
+                                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase">المبلغ</th>
+                                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase">التاريخ</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-3 py-2 text-sm text-gray-900">إيراد من صيانة هاتف</td>
+                                    <td class="px-3 py-2 text-sm">إيراد</td>
+                                    <td class="px-3 py-2 text-sm text-green-600">+350 ريال</td>
+                                    <td class="px-3 py-2 text-sm text-gray-500">2023-10-25</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2 text-sm text-gray-900">إيراد من بيع شاشة</td>
+                                    <td class="px-3 py-2 text-sm">إيراد</td>
+                                    <td class="px-3 py-2 text-sm text-green-600">+250 ريال</td>
+                                    <td class="px-3 py-2 text-sm text-gray-500">2023-10-24</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-6 text-xl font-bold text-gray-800 text-left border-t pt-4">
+                        إجمالي الإيرادات: <span class="text-green-600">600 ريال</span>
+                    </div>
+                `;
+            });
+        });
+    </script>
+</body>
+</html>

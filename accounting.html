@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>الإيرادات والمصاريف - إدارة الورش</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        body { 
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f3f4f6;
+            padding-top: 64px;
+        }
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+            background-color: #A20A0A;
+        }
+        @media (max-width: 1023px) {
+            #sidebar {
+                transform: translateX(100%);
+            }
+            #sidebar.open {
+                transform: translateX(0);
+            }
+        }
+        .sidebar-link {
+            transition: all 0.2s ease;
+        }
+        .sidebar-link:hover {
+            background-color: #C02020;
+        }
+        .accent-color {
+            color: #FF6347;
+        }
+        .bg-accent {
+            background-color: #FF6347;
+        }
+        .ring-accent {
+            --tw-ring-color: #ff9980;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <header class="fixed top-0 left-0 right-0 z-40 bg-white shadow-md p-4 flex items-center justify-between lg:justify-start lg:hidden">
+        <div class="flex items-center gap-4">
+            <button id="menuBtn" class="text-[#A20A0A] text-xl">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h2 class="text-xl font-bold text-gray-800">الإيرادات والمصاريف</h2>
+        </div>
+        <button id="closeAppBtn" class="text-gray-500 hover:text-gray-800 text-2xl lg:hidden">
+            <i class="fas fa-times"></i>
+        </button>
+    </header>
+
+    <aside id="sidebar" class="fixed inset-y-0 right-0 z-50 w-64 text-white shadow-lg lg:relative lg:translate-x-0 transform">
+    <div class="p-6">
+        <button id="closeSidebarBtn" class="absolute top-4 left-4 text-white text-xl lg:hidden">
+            <i class="fas fa-times"></i>
+        </button>
+        <h1 class="text-3xl font-bold mb-8 text-center border-b border-[#C02020] pb-4">إدارة الورش</h1>
+        <nav class="space-y-3">
+            <a href="index.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-tachometer-alt text-lg"></i>
+                <span>الرئيسية</span>
+            </a>
+            <a href="orders.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-boxes text-lg"></i>
+                <span>إدارة الطلبات</span>
+            </a>
+            <a href="technicians.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-users-cog text-lg"></i>
+                <span>إدارة الفنيين</span>
+            </a>
+            <a href="customers.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-users text-lg"></i>
+                <span>إدارة الزبائن</span>
+            </a>
+            <a href="products.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-tools text-lg"></i>
+                <span>المنتجات والخدمات</span>
+            </a>
+            <a href="accounting.html" class="flex items-center gap-4 p-3 rounded-lg bg-[#FF6347] text-[#A20A0A] font-semibold sidebar-link">
+                <i class="fas fa-wallet text-lg"></i>
+                <span>الإيرادات والمصاريف</span>
+            </a>
+            <a href="reports.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-chart-bar text-lg"></i>
+                <span>التقارير</span>
+            </a>
+            <a href="settings.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-cog text-lg"></i>
+                <span>الإعدادات</span>
+            </a>
+            <a href="#" id="logoutBtn" class="flex items-center gap-4 p-3 rounded-lg text-red-300 hover:text-red-100 hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-sign-out-alt text-lg"></i>
+                <span>تسجيل الخروج</span>
+            </a>
+        </nav>
+    </div>
+</aside>
+
+    <main class="flex-1 p-4 md:p-8">
+        <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold text-gray-800 flex items-center gap-2 mb-4 md:mb-0">
+                    <i class="fas fa-wallet accent-color"></i>
+                    <span>الإيرادات والمصاريف</span>
+                </h1>
+                <button id="openModalBtn" class="bg-[#A20A0A] text-white py-2 px-4 rounded-lg hover:bg-[#C02020] transition-colors duration-200 flex items-center gap-2">
+                    <i class="fas fa-plus"></i>
+                    <span>إضافة عملية مالية</span>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div class="bg-green-600 text-white p-6 rounded-lg shadow-lg flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium">إجمالي الإيرادات</p>
+                        <p class="text-2xl font-bold mt-1">15,800 ريال</p>
+                    </div>
+                    <i class="fas fa-arrow-up text-4xl opacity-50"></i>
+                </div>
+                <div class="bg-red-600 text-white p-6 rounded-lg shadow-lg flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium">إجمالي المصاريف</p>
+                        <p class="text-2xl font-bold mt-1">4,200 ريال</p>
+                    </div>
+                    <i class="fas fa-arrow-down text-4xl opacity-50"></i>
+                </div>
+                <div class="bg-blue-600 text-white p-6 rounded-lg shadow-lg flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium">صافي الربح</p>
+                        <p class="text-2xl font-bold mt-1">11,600 ريال</p>
+                    </div>
+                    <i class="fas fa-sack-dollar text-4xl opacity-50"></i>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                    <h2 class="text-xl font-bold text-gray-700 mb-4">أداء شهري</h2>
+                    <canvas id="financialChart"></canvas>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                    <h2 class="text-xl font-bold text-gray-700 mb-4">آخر العمليات</h2>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الوصف</th>
+                                    <th scope="col" class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">النوع</th>
+                                    <th scope="col" class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">المبلغ</th>
+                                    <th scope="col" class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">التاريخ</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-3 py-2 text-sm text-gray-900">إيراد من صيانة هاتف</td>
+                                    <td class="px-3 py-2 text-sm">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">إيراد</span>
+                                    </td>
+                                    <td class="px-3 py-2 text-sm font-medium text-green-600">+350 ريال</td>
+                                    <td class="px-3 py-2 text-sm text-gray-500">2023-10-25</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2 text-sm text-gray-900">فاتورة كهرباء</td>
+                                    <td class="px-3 py-2 text-sm">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">مصروف</span>
+                                    </td>
+                                    <td class="px-3 py-2 text-sm font-medium text-red-600">-120 ريال</td>
+                                    <td class="px-3 py-2 text-sm text-gray-500">2023-10-24</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2 text-sm text-gray-900">إيراد من بيع شاشة</td>
+                                    <td class="px-3 py-2 text-sm">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">إيراد</span>
+                                    </td>
+                                    <td class="px-3 py-2 text-sm font-medium text-green-600">+250 ريال</td>
+                                    <td class="px-3 py-2 text-sm text-gray-500">2023-10-24</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="addTransactionModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg md:max-w-xl p-6 relative">
+            <div class="flex justify-between items-center border-b pb-4 mb-4">
+                <h3 class="text-2xl font-bold text-gray-800">إضافة عملية مالية</h3>
+                <button id="closeModalBtn" class="text-gray-500 hover:text-gray-800 text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="addTransactionForm" class="space-y-4">
+                <div>
+                    <label for="transactionType" class="block text-sm font-medium text-gray-700">النوع</label>
+                    <select id="transactionType" name="transactionType" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-[#A20A0A] focus:border-[#A20A0A]">
+                        <option value="revenue">إيراد</option>
+                        <option value="expense">مصروف</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="transactionDescription" class="block text-sm font-medium text-gray-700">الوصف</label>
+                    <input type="text" id="transactionDescription" name="transactionDescription" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-[#A20A0A] focus:border-[#A20A0A]">
+                </div>
+                <div>
+                    <label for="transactionAmount" class="block text-sm font-medium text-gray-700">المبلغ (بالريال)</label>
+                    <input type="number" id="transactionAmount" name="transactionAmount" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-[#A20A0A] focus:border-[#A20A0A]">
+                </div>
+                <div>
+                    <label for="transactionDate" class="block text-sm font-medium text-gray-700">التاريخ</label>
+                    <input type="date" id="transactionDate" name="transactionDate" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-[#A20A0A] focus:border-[#A20A0A]">
+                </div>
+                
+                <div class="flex justify-end pt-4 border-t">
+                    <button type="submit" class="bg-[#A20A0A] text-white py-2 px-4 rounded-lg hover:bg-[#C02020] transition-colors duration-200">
+                        إضافة
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.getElementById('menuBtn');
+            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            const closeAppBtn = document.getElementById('closeAppBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            const openModalBtn = document.getElementById('openModalBtn');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const addTransactionModal = document.getElementById('addTransactionModal');
+            const addTransactionForm = document.getElementById('addTransactionForm');
+            
+            // وظيفة فتح/إغلاق القائمة الجانبية
+            menuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+            });
+            
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', () => {
+                    sidebar.classList.remove('open');
+                });
+            }
+
+            // وظيفة زر الإغلاق
+            if (closeAppBtn) {
+                closeAppBtn.addEventListener('click', () => {
+                    window.location.href = 'login.html';
+                });
+            }
+
+            // وظيفة تسجيل الخروج
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault(); 
+                    localStorage.removeItem('userToken'); 
+                    window.location.href = 'login.html';
+                });
+            }
+
+            // وظيفة فتح النافذة المنبثقة
+            openModalBtn.addEventListener('click', () => {
+                addTransactionModal.classList.remove('hidden');
+                addTransactionModal.classList.add('flex');
+            });
+
+            // وظيفة إغلاق النافذة المنبثقة
+            closeModalBtn.addEventListener('click', () => {
+                addTransactionModal.classList.add('hidden');
+                addTransactionModal.classList.remove('flex');
+            });
+            
+            // إغلاق النافذة عند الضغط خارجها
+            addTransactionModal.addEventListener('click', (e) => {
+                if (e.target.id === 'addTransactionModal') {
+                    addTransactionModal.classList.add('hidden');
+                    addTransactionModal.classList.remove('flex');
+                }
+            });
+
+            // التعامل مع إرسال النموذج (سيتم ربطه بالواجهة الخلفية لاحقًا)
+            addTransactionForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                console.log('تم إرسال بيانات العملية المالية بنجاح.');
+            });
+
+            // بيانات تجريبية للرسم البياني
+            const financialData = {
+                labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+                datasets: [
+                    {
+                        label: 'الإيرادات',
+                        data: [12000, 15000, 18000, 16000, 20000, 22000],
+                        backgroundColor: '#10B981', // green-500
+                        borderColor: '#047857', // green-700
+                        tension: 0.4
+                    },
+                    {
+                        label: 'المصاريف',
+                        data: [3000, 4500, 4000, 3500, 5000, 4800],
+                        backgroundColor: '#EF4444', // red-500
+                        borderColor: '#B91C1C', // red-700
+                        tension: 0.4
+                    }
+                ]
+            };
+
+            const financialConfig = {
+                type: 'line',
+                data: financialData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    family: 'Tajawal',
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            };
+
+            const financialChart = new Chart(
+                document.getElementById('financialChart'),
+                financialConfig
+            );
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>المنتجات والخدمات - إدارة الورش</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        body { 
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f3f4f6;
+            padding-top: 64px;
+        }
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+            background-color: #A20A0A;
+        }
+        @media (max-width: 1023px) {
+            #sidebar {
+                transform: translateX(100%);
+            }
+            #sidebar.open {
+                transform: translateX(0);
+            }
+        }
+        .sidebar-link {
+            transition: all 0.2s ease;
+        }
+        .sidebar-link:hover {
+            background-color: #C02020;
+        }
+        .accent-color {
+            color: #FF6347;
+        }
+        .bg-accent {
+            background-color: #FF6347;
+        }
+        .ring-accent {
+            --tw-ring-color: #ff9980;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <header class="fixed top-0 left-0 right-0 z-40 bg-white shadow-md p-4 flex items-center justify-between lg:justify-start lg:hidden">
+        <div class="flex items-center gap-4">
+            <button id="menuBtn" class="text-[#A20A0A] text-xl">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h2 class="text-xl font-bold text-gray-800">المنتجات والخدمات</h2>
+        </div>
+        <button id="closeAppBtn" class="text-gray-500 hover:text-gray-800 text-2xl lg:hidden">
+            <i class="fas fa-times"></i>
+        </button>
+    </header>
+
+    <aside id="sidebar" class="fixed inset-y-0 right-0 z-50 w-64 text-white shadow-lg lg:relative lg:translate-x-0 transform">
+    <div class="p-6">
+        <button id="closeSidebarBtn" class="absolute top-4 left-4 text-white text-xl lg:hidden">
+            <i class="fas fa-times"></i>
+        </button>
+        <h1 class="text-3xl font-bold mb-8 text-center border-b border-[#C02020] pb-4">إدارة الورش</h1>
+        <nav class="space-y-3">
+            <a href="index.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-tachometer-alt text-lg"></i>
+                <span>الرئيسية</span>
+            </a>
+            <a href="orders.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-boxes text-lg"></i>
+                <span>إدارة الطلبات</span>
+            </a>
+            <a href="technicians.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-users-cog text-lg"></i>
+                <span>إدارة الفنيين</span>
+            </a>
+            <a href="customers.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-users text-lg"></i>
+                <span>إدارة الزبائن</span>
+            </a>
+            <a href="products.html" class="flex items-center gap-4 p-3 rounded-lg bg-[#FF6347] text-[#A20A0A] font-semibold sidebar-link">
+                <i class="fas fa-tools text-lg"></i>
+                <span>المنتجات والخدمات</span>
+            </a>
+            <a href="accounting.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-wallet text-lg"></i>
+                <span>الإيرادات والمصاريف</span>
+            </a>
+            <a href="reports.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-chart-bar text-lg"></i>
+                <span>التقارير</span>
+            </a>
+            <a href="settings.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-cog text-lg"></i>
+                <span>الإعدادات</span>
+            </a>
+            <a href="#" id="logoutBtn" class="flex items-center gap-4 p-3 rounded-lg text-red-300 hover:text-red-100 hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-sign-out-alt text-lg"></i>
+                <span>تسجيل الخروج</span>
+            </a>
+        </nav>
+    </div>
+</aside>
+
+    <main class="flex-1 p-4 md:p-8">
+        <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold text-gray-800 flex items-center gap-2 mb-4 md:mb-0">
+                    <i class="fas fa-tools accent-color"></i>
+                    <span>المنتجات والخدمات</span>
+                </h1>
+                <button id="openModalBtn" class="bg-[#A20A0A] text-white py-2 px-4 rounded-lg hover:bg-[#C02020] transition-colors duration-200 flex items-center gap-2">
+                    <i class="fas fa-plus"></i>
+                    <span>إضافة جديد</span>
+                </button>
+            </div>
+            
+            <div class="mb-6 flex flex-col sm:flex-row gap-4">
+                <input type="text" placeholder="ابحث باسم المنتج أو الخدمة..." class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ring-accent">
+                <div class="flex gap-2">
+                    <button class="px-4 py-2 rounded-lg bg-[#FF6347] text-white font-semibold">الكل</button>
+                    <button class="px-4 py-2 rounded-lg text-gray-700 bg-gray-200 hover:bg-gray-300">منتجات</button>
+                    <button class="px-4 py-2 rounded-lg text-gray-700 bg-gray-200 hover:bg-gray-300">خدمات</button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto bg-white rounded-lg shadow">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الاسم</th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">النوع</th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">السعر</th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الكمية</th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">بطارية iPhone 11</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">منتج</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">250 ريال</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">20</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <a href="#" class="text-blue-600 hover:text-blue-900 ml-2">تعديل</a>
+                                <a href="#" class="text-red-600 hover:text-red-900">حذف</a>
+                            </td>
+                        </tr>
+                         <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">تغيير شاشة Samsung</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">خدمة</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">150 ريال</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">--</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <a href="#" class="text-blue-600 hover:text-blue-900 ml-2">تعديل</a>
+                                <a href="#" class="text-red-600 hover:text-red-900">حذف</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <div id="addItemModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg md:max-w-xl p-6 relative">
+            <div class="flex justify-between items-center border-b pb-4 mb-4">
+                <h3 class="text-2xl font-bold text-gray-800">إضافة منتج/خدمة جديدة</h3>
+                <button id="closeModalBtn" class="text-gray-500 hover:text-gray-800 text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="addItemForm" class="space-y-4">
+                <div>
+                    <label for="itemType" class="block text-sm font-medium text-gray-700">النوع</label>
+                    <select id="itemType" name="itemType" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-[#A20A0A] focus:border-[#A20A0A]">
+                        <option value="product">منتج</option>
+                        <option value="service">خدمة</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="itemName" class="block text-sm font-medium text-gray-700">الاسم</label>
+                    <input type="text" id="itemName" name="itemName" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-[#A20A0A] focus:border-[#A20A0A]">
+                </div>
+                <div>
+                    <label for="itemPrice" class="block text-sm font-medium text-gray-700">السعر (بالريال)</label>
+                    <input type="number" id="itemPrice" name="itemPrice" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-[#A20A0A] focus:border-[#A20A0A]">
+                </div>
+                <div id="itemQuantityField">
+                    <label for="itemQuantity" class="block text-sm font-medium text-gray-700">الكمية</label>
+                    <input type="number" id="itemQuantity" name="itemQuantity" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-[#A20A0A] focus:border-[#A20A0A]">
+                </div>
+                
+                <div class="flex justify-end pt-4 border-t">
+                    <button type="submit" class="bg-[#A20A0A] text-white py-2 px-4 rounded-lg hover:bg-[#C02020] transition-colors duration-200">
+                        إضافة
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.getElementById('menuBtn');
+            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            const closeAppBtn = document.getElementById('closeAppBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            const openModalBtn = document.getElementById('openModalBtn');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const addItemModal = document.getElementById('addItemModal');
+            const addItemForm = document.getElementById('addItemForm');
+            const itemTypeSelect = document.getElementById('itemType');
+            const itemQuantityField = document.getElementById('itemQuantityField');
+
+            // وظيفة فتح/إغلاق القائمة الجانبية
+            menuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+            });
+            
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', () => {
+                    sidebar.classList.remove('open');
+                });
+            }
+
+            // وظيفة زر الإغلاق
+            if (closeAppBtn) {
+                closeAppBtn.addEventListener('click', () => {
+                    window.location.href = 'login.html';
+                });
+            }
+
+            // وظيفة تسجيل الخروج
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault(); 
+                    localStorage.removeItem('userToken'); 
+                    window.location.href = 'login.html';
+                });
+            }
+
+            // وظيفة فتح النافذة المنبثقة
+            openModalBtn.addEventListener('click', () => {
+                addItemModal.classList.remove('hidden');
+                addItemModal.classList.add('flex');
+            });
+
+            // وظيفة إغلاق النافذة المنبثقة
+            closeModalBtn.addEventListener('click', () => {
+                addItemModal.classList.add('hidden');
+                addItemModal.classList.remove('flex');
+            });
+            
+            // إغلاق النافذة عند الضغط خارجها
+            addItemModal.addEventListener('click', (e) => {
+                if (e.target.id === 'addItemModal') {
+                    addItemModal.classList.add('hidden');
+                    addItemModal.classList.remove('flex');
+                }
+            });
+
+            // إظهار أو إخفاء حقل الكمية بناءً على نوع العنصر المختار
+            itemTypeSelect.addEventListener('change', (e) => {
+                if (e.target.value === 'product') {
+                    itemQuantityField.classList.remove('hidden');
+                } else {
+                    itemQuantityField.classList.add('hidden');
+                }
+            });
+
+            // التأكد من إخفاء حقل الكمية عند تحميل الصفحة للمرة الأولى إذا كان الخيار الافتراضي هو خدمة
+            if (itemTypeSelect.value === 'service') {
+                 itemQuantityField.classList.add('hidden');
+            }
+
+            // التعامل مع إرسال النموذج (سيتم ربطه بالواجهة الخلفية لاحقًا)
+            addItemForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                console.log('تم إرسال بيانات العنصر بنجاح.');
+            });
+        });
+    </script>
+</body>
+</html>

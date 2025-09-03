@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>الرئيسية - إدارة الورش</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        body { 
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f3f4f6;
+            padding-top: 64px; /* مساحة للشريط العلوي الثابت */
+        }
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+            background-color: #A20A0A; /* لون أحمر غامق للقائمة */
+        }
+        @media (max-width: 1023px) {
+            #sidebar {
+                transform: translateX(100%);
+            }
+            #sidebar.open {
+                transform: translateX(0);
+            }
+        }
+        .sidebar-link {
+            transition: all 0.2s ease;
+        }
+        .sidebar-link:hover {
+            background-color: #C02020; /* لون أحمر أفتح عند التحويم */
+        }
+        .main-button {
+            background-color: #A20A0A;
+            transition: all 0.2s ease;
+        }
+        .main-button:hover {
+            background-color: #C02020;
+        }
+        .accent-color {
+            color: #FF6347; /* لون أحمر فاتح للتمييز */
+        }
+        .bg-accent {
+            background-color: #FF6347;
+        }
+        .ring-accent {
+            --tw-ring-color: #ff9980;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <header class="fixed top-0 left-0 right-0 z-40 bg-white shadow-md p-4 flex items-center justify-between lg:justify-start lg:hidden">
+        <div class="flex items-center gap-4">
+            <button id="menuBtn" class="text-[#A20A0A] text-xl">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h2 class="text-xl font-bold text-gray-800">الرئيسية</h2>
+        </div>
+       
+    </header>
+
+    <aside id="sidebar" class="fixed inset-y-0 right-0 z-50 w-64 text-white shadow-lg lg:relative lg:translate-x-0 transform">
+    <div class="p-6">
+        <button id="closeSidebarBtn" class="absolute top-4 left-4 text-white text-xl lg:hidden">
+            <i class="fas fa-times"></i>
+        </button>
+        <h1 class="text-3xl font-bold mb-8 text-center border-b border-[#C02020] pb-4">إدارة الورش</h1>
+        <nav class="space-y-3">
+            <a href="index.html" class="flex items-center gap-4 p-3 rounded-lg bg-[#FF6347] text-[#A20A0A] font-semibold sidebar-link">
+                <i class="fas fa-tachometer-alt text-lg"></i>
+                <span>الرئيسية</span>
+            </a>
+            <a href="orders.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-boxes text-lg"></i>
+                <span>إدارة الطلبات</span>
+            </a>
+            <a href="technicians.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-users-cog text-lg"></i>
+                <span>إدارة الفنيين</span>
+            </a>
+            <a href="customers.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-users text-lg"></i>
+                <span>إدارة الزبائن</span>
+            </a>
+            <a href="products.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-tools text-lg"></i>
+                <span>المنتجات والخدمات</span>
+            </a>
+            <a href="accounting.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-wallet text-lg"></i>
+                <span>الإيرادات والمصاريف</span>
+            </a>
+            <a href="reports.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-chart-bar text-lg"></i>
+                <span>التقارير</span>
+            </a>
+            <a href="settings.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-cog text-lg"></i>
+                <span>الإعدادات</span>
+            </a>
+            <a href="#" id="logoutBtn" class="flex items-center gap-4 p-3 rounded-lg text-red-300 hover:text-red-100 hover:bg-[#C02020] sidebar-link">
+                <i class="fas fa-sign-out-alt text-lg"></i>
+                <span>تسجيل الخروج</span>
+            </a>
+        </nav>
+    </div>
+</aside>
+
+    <main class="flex-1 p-4 md:p-8">
+        <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6 mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 flex items-center gap-2 mb-2">
+                <i class="fas fa-tachometer-alt accent-color"></i>
+                <span>لوحة التحكم الرئيسية</span>
+            </h1>
+            <p class="text-gray-500 mb-6">نظرة عامة على أداء نظام إدارة الورش.</p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-[#A20A0A] text-white p-6 rounded-lg shadow-lg flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium">الهواتف المستلمة اليوم</p>
+                        <p class="text-2xl font-bold mt-1">12</p>
+                    </div>
+                    <i class="fas fa-mobile-alt text-4xl opacity-50"></i>
+                </div>
+                <div class="bg-[#FF6347] text-white p-6 rounded-lg shadow-lg flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium">الهواتف المسلمة</p>
+                        <p class="text-2xl font-bold mt-1">8</p>
+                    </div>
+                    <i class="fas fa-check-circle text-4xl opacity-50"></i>
+                </div>
+                <div class="bg-emerald-600 text-white p-6 rounded-lg shadow-lg flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium">قيمة الإيراد</p>
+                        <p class="text-2xl font-bold mt-1">4500 ريال</p>
+                    </div>
+                    <i class="fas fa-money-bill-wave text-4xl opacity-50"></i>
+                </div>
+                <div class="bg-yellow-600 text-white p-6 rounded-lg shadow-lg flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium">نسبة الفني / المركز</p>
+                        <p class="text-2xl font-bold mt-1">60% / 40%</p>
+                    </div>
+                    <i class="fas fa-chart-pie text-4xl opacity-50"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                <h2 class="text-xl font-bold text-gray-700 mb-4">الإيرادات الأسبوعية</h2>
+                <canvas id="revenueChart"></canvas>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                <h2 class="text-xl font-bold text-gray-700 mb-4">الطلبات تحت الصيانة</h2>
+                <ul class="space-y-4 text-sm text-gray-600">
+                    <li class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                        <i class="fas fa-cog mt-1 accent-color"></i>
+                        <div>
+                            <p class="font-semibold text-gray-800">صيانة شاشة هاتف Samsung A51.</p>
+                            <p>الحالة: <span class="font-mono">تحت الصيانة</span> - للفني: <span class="font-mono">أحمد</span>.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                        <i class="fas fa-cog mt-1 accent-color"></i>
+                        <div>
+                            <p class="font-semibold text-gray-800">تغيير بطارية هاتف iPhone 13.</p>
+                            <p>الحالة: <span class="font-mono">تحت الصيانة</span> - للفني: <span class="font-mono">علي</span>.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                        <i class="fas fa-cog mt-1 accent-color"></i>
+                        <div>
+                            <p class="font-semibold text-gray-800">فحص هاتف Xiaomi Redmi Note 10.</p>
+                            <p>الحالة: <span class="font-mono">انتظار</span> - للفني: <span class="font-mono">فاطمة</span>.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuBtn = document.getElementById('menuBtn');
+            const sidebar = document.getElementById('sidebar');
+            const closeAppBtn = document.getElementById('closeAppBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const closeSidebarBtn = document.getElementById('closeSidebarBtn'); // تم إضافة هذا الزر
+
+            // وظيفة فتح/إغلاق القائمة الجانبية
+            menuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+            });
+            
+            // وظيفة زر إغلاق القائمة الجانبية
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', () => {
+                    sidebar.classList.remove('open');
+                });
+            }
+
+            // وظيفة زر الإغلاق (تم التعديل)
+            if (closeAppBtn) {
+                closeAppBtn.addEventListener('click', () => {
+                    window.location.href = 'login.html';
+                });
+            }
+
+            // وظيفة تسجيل الخروج
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault(); 
+                    localStorage.removeItem('userToken'); 
+                    window.location.href = 'login.html';
+                });
+            }
+
+            // بيانات تجريبية للرسم البياني
+            const revenueData = {
+                labels: ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],
+                datasets: [{
+                    label: 'الإيرادات بالريال',
+                    data: [1500, 2200, 3000, 2500, 4000, 3500, 5000],
+                    backgroundColor: '#A20A0A',
+                    borderColor: '#A20A0A',
+                    borderWidth: 1,
+                    fill: false,
+                    tension: 0.4
+                }]
+            };
+
+            const revenueConfig = {
+                type: 'line',
+                data: revenueData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            };
+
+            const revenueChart = new Chart(
+                document.getElementById('revenueChart'),
+                revenueConfig
+            );
+        });
+
+        // --- بنية PWA الأساسية ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                }, err => {
+                    console.log('Service Worker registration failed:', err);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
