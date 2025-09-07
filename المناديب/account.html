@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حسابي - VELO Velocity</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .topbar, .navbar {
+            background-color: #045482;
+            color: white;
+        }
+        .active-link {
+            color: #EB630A;
+        }
+        .navbar a {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 0;
+            transition: color 0.2s ease;
+        }
+        .navbar a:hover {
+            color: #f7a972;
+        }
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 24px;
+        }
+        .stat-card {
+            text-align: center;
+            padding: 16px;
+        }
+        .stat-card .value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #045482;
+        }
+        .stat-card .label {
+            font-size: 1rem;
+            color: #EB630A;
+        }
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #EB630A;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="topbar w-full p-4 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto text-center">
+            <h1 class="text-2xl font-bold">حسابي</h1>
+        </div>
+    </header>
+
+    <div class="flex-grow p-4 mb-20">
+        <div class="container mx-auto max-w-4xl">
+            
+            <div class="card mb-6 text-center">
+                <img src="https://via.placeholder.com/150" alt="صورة الملف الشخصي" class="profile-pic mx-auto mb-4">
+                <h2 id="delegateName" class="text-2xl font-bold text-[#045482]">اسم المندوب</h2>
+                <p id="delegateAge" class="text-gray-600">العمر: 30 سنة</p>
+                <p id="delegateRegion" class="text-gray-600">المنطقة المسؤولة: المنطقة الشرقية</p>
+            </div>
+
+            <h3 class="text-xl font-bold text-[#045482] mb-4 text-center">ملخص الطلبات</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card stat-card">
+                    <div id="stockCount" class="value">0</div>
+                    <div class="label">طلبات في المخزن</div>
+                </div>
+                <div class="card stat-card">
+                    <div id="deliveryCount" class="value">0</div>
+                    <div class="label">طلبات قيد التوصيل</div>
+                </div>
+                <div class="card stat-card">
+                    <div id="deliveredCount" class="value">0</div>
+                    <div class="label">طلبات تم توصيلها</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <nav class="navbar w-full fixed bottom-0 left-0 right-0 z-50 shadow-lg">
+        <div class="container mx-auto flex justify-around items-center h-16">
+            <a href="الرئسيه.html">
+                <i class="fas fa-home text-2xl"></i>
+                <span class="text-xs mt-1">الرئيسية</span>
+            </a>
+            <a href="./notifications.html">
+                <i class="fas fa-bell text-2xl"></i>
+                <span class="text-xs mt-1">الإشعارات</span>
+            </a>
+            <a href="account.html" class="active-link">
+                <i class="fas fa-user-circle text-2xl"></i>
+                <span class="text-xs mt-1">الحساب</span>
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hardcoded logged-in delegate data and all orders
+            const loggedInDelegate = { 
+                name: 'فاطمة علي', 
+                age: 35, 
+                region: 'المنطقة الشرقية'
+            };
+
+            const allOrders = JSON.parse(localStorage.getItem('adminOrders')) || [
+                { id: 1, code: 'ORD-001', customer: 'علي عبد السلام', delegate: 'أحمد محمد', status: 'delivered' },
+                { id: 2, code: 'ORD-002', customer: 'محمد فرج', delegate: 'فاطمة علي', status: 'on-delivery' },
+                { id: 3, code: 'ORD-003', customer: 'سالمة عبد الله', delegate: 'محمود عبد الله', status: 'in-stock' },
+                { id: 4, code: 'ORD-004', customer: 'خالد مصطفى', delegate: 'أحمد محمد', status: 'delivered' },
+                { id: 5, code: 'ORD-005', customer: 'ليلى سالم', delegate: 'أحمد محمد', status: 'in-stock' }
+            ];
+            
+            // Filter orders for the current delegate
+            const delegateOrders = allOrders.filter(order => order.delegate === loggedInDelegate.name);
+            
+            // Get order counts
+            const inStockCount = delegateOrders.filter(o => o.status === 'in-stock').length;
+            const onDeliveryCount = delegateOrders.filter(o => o.status === 'on-delivery').length;
+            const deliveredCount = delegateOrders.filter(o => o.status === 'delivered').length;
+
+            // Update DOM with delegate data and stats
+            document.getElementById('delegateName').textContent = loggedInDelegate.name;
+            document.getElementById('delegateAge').textContent = `العمر: ${loggedInDelegate.age} سنة`;
+            document.getElementById('delegateRegion').textContent = `المنطقة المسؤولة: ${loggedInDelegate.region}`;
+            
+            document.getElementById('stockCount').textContent = inStockCount;
+            document.getElementById('deliveryCount').textContent = onDeliveryCount;
+            document.getElementById('deliveredCount').textContent = deliveredCount;
+        });
+    </script>
+</body>
+</html>

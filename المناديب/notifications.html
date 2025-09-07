@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإشعارات - VELO Velocity</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .topbar, .navbar {
+            background-color: #045482;
+            color: white;
+        }
+        .active-link {
+            color: #EB630A;
+        }
+        .navbar a {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 0;
+            transition: color 0.2s ease;
+        }
+        .navbar a:hover {
+            color: #f7a972;
+        }
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 16px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="topbar w-full p-4 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto text-center">
+            <h1 class="text-2xl font-bold">الإشعارات</h1>
+        </div>
+    </header>
+
+    <div class="flex-grow p-4 mb-20">
+        <div class="container mx-auto max-w-4xl space-y-4">
+            
+            <div class="card">
+                <div class="flex items-center mb-2">
+                    <div class="w-2 h-2 bg-green-500 rounded-full ml-2"></div>
+                    <h3 class="text-lg font-bold text-gray-800">طلب جديد متاح للاستلام</h3>
+                </div>
+                <p class="text-gray-600">تم إسناد الطلب #ORD-006 إلى حسابك. يرجى التوجه إلى المخزن لاستلامه.</p>
+                <p class="text-sm text-gray-400 mt-2">منذ 5 دقائق</p>
+            </div>
+            
+            <div class="card">
+                <div class="flex items-center mb-2">
+                    <div class="w-2 h-2 bg-blue-500 rounded-full ml-2"></div>
+                    <h3 class="text-lg font-bold text-gray-800">تحديث على حالة طلب</h3>
+                </div>
+                <p class="text-gray-600">تم تحديث حالة الطلب #ORD-002 إلى "قيد التوصيل".</p>
+                <p class="text-sm text-gray-400 mt-2">منذ 3 ساعات</p>
+            </div>
+            
+            <div class="card opacity-70">
+                <div class="flex items-center mb-2">
+                    <div class="w-2 h-2 bg-gray-400 rounded-full ml-2"></div>
+                    <h3 class="text-lg font-bold text-gray-500">تم إرجاع الطلب</h3>
+                </div>
+                <p class="text-gray-400">تم إرجاع الطلب #ORD-001 من قبل العميل.</p>
+                <p class="text-sm text-gray-400 mt-2">بالأمس</p>
+            </div>
+
+            <div id="noNotificationsMessage" class="hidden text-center text-gray-500 mt-10">
+                <i class="fas fa-bell-slash text-4xl mb-2"></i>
+                <p>لا توجد إشعارات جديدة حاليًا.</p>
+            </div>
+            
+        </div>
+    </div>
+
+    <nav class="navbar w-full fixed bottom-0 left-0 right-0 z-50 shadow-lg">
+        <div class="container mx-auto flex justify-around items-center h-16">
+            <a href="الرئسيه.html">
+                <i class="fas fa-home text-2xl"></i>
+                <span class="text-xs mt-1">الرئيسية</span>
+            </a>
+            <a href="./notifications.html" class="active-link">
+                <i class="fas fa-bell text-2xl"></i>
+                <span class="text-xs mt-1">الإشعارات</span>
+            </a>
+            <a href="./account.html">
+                <i class="fas fa-user-circle text-2xl"></i>
+                <span class="text-xs mt-1">الحساب</span>
+            </a>
+        </div>
+    </nav>
+</body>
+</html>
