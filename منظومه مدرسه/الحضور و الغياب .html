@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نظام إدارة المدرسة - لوحة التحكم</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff', 100: '#e0f2fe', 200: '#bae6fd', 300: '#7dd3fc', 400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1', 800: '#075985', 900: '#0c4a6e',
+            },
+            secondary: {
+              50: '#f5f3ff', 100: '#ede9fe', 200: '#ddd6fe', 300: '#c4b5fd', 400: '#a78bfa', 500: '#8b5cf6', 600: '#7c3aed', 700: '#6d28d9', 800: '#5b21b6', 900: '#4c1d95',
+            },
+            dark: '#1e293b',
+            light: '#f8fafc'
+          },
+          fontFamily: {
+            sans: ['Tajawal', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* Custom CSS for sidebar transition */
+    @media (max-width: 1023px) { /* For screens smaller than lg breakpoint */
+      .sidebar {
+        transform: translateX(100%); /* Starts off-screen to the right for RTL */
+        transition: transform 0.3s ease-out;
+        position: fixed; /* Keep it fixed when scrolled */
+        top: 0;
+        right: 0; /* Position to the right for RTL */
+        height: 100%;
+        z-index: 50; /* Ensure it's above other content */
+      }
+      .sidebar.open {
+        transform: translateX(0); /* Slides in */
+      }
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 40;
+        display: none;
+      }
+      .overlay.show {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <div class="flex h-screen">
+
+    <div id="sidebar-overlay" class="overlay lg:hidden"></div>
+
+    
+
+     <aside id="sidebar" class="w-64 bg-dark text-light flex flex-col shadow-lg lg:relative">
+      <div class="p-4 text-2xl font-bold border-b border-gray-700 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 ml-2 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path d="M12 14l9-5-9-5-9 5 9 5z" />
+          <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+        </svg>
+        نظام المدرسة
+      </div>
+
+      <nav class="flex-1 p-4 space-y-2">
+        <a href="index.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
+          لوحة التحكم
+        </a>
+        <a href="الطلاب.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          الطلاب
+        </a>
+        <a href="المعلمي.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          المعلمين
+        </a>
+        <a href="الفصول الدراسيه.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+          الفصول الدراسية
+        </a>
+        <a href="السنوات الدراسيه.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          السنوات الدراسية
+        </a>
+        <a href="الحضور و الغياب .html" class="block py-3 px-4 rounded bg-primary-700 text-white font-medium transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+          الحضور والغياب
+        </a>
+        <a href="الاداره الماليه.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          الإدارة المالية
+        </a>
+        <a href="نتائج الطلاب.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          نتائج الطلاب
+        </a>
+      </nav>
+
+      <div class="p-4 border-t border-gray-700 text-sm text-gray-400">
+        &copy; 2025 نظام إدارة المدارس
+      </div>
+    </aside>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الحضور والغياب</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* تعريف الألوان الأساسية */
+        .bg-primary-600 { background-color: #4F46E5; } /* بنفسجي */
+        .hover:bg-primary-700:hover { background-color: #4338CA; }
+        .focus:ring-primary-500:focus { --tw-ring-color: #6366F1; }
+        .text-primary-600 { color: #4F46E5; }
+        .hover:text-primary-900:hover { color: #3730A3; }
+        .border-primary-500 { border-color: #6366F1; }
+        .bg-primary-50 { background-color: #EEF2FF; }
+        .text-dark { color: #1F2937; } /* لون نص داكن للعنوان */
+    </style>
+</head>
+<body class="bg-gray-100 flex h-screen">
+
+    
+
+    <main class="flex-1 p-6 overflow-y-auto">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-2xl font-bold text-dark">إدارة الحضور والغياب</h1>
+                <p class="text-gray-600">تسجيل حضور وغياب الطلاب</p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 mb-6">
+            <h2 class="text-lg font-semibold text-dark mb-4">تحديد الفصل والتاريخ</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                <div>
+                    <label for="attendanceDate" class="block text-sm font-medium text-gray-700 mb-1">التاريخ</label>
+                    <input type="date" id="attendanceDate" class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm">
+                </div>
+                <div>
+                    <label for="classroomId" class="block text-sm font-medium text-gray-700 mb-1">الفصل الدراسي</label>
+                    <select id="classroomId" class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm">
+                        <option value="">اختر فصلاً</option>
+                        </select>
+                </div>
+                <div class="flex items-end">
+                    <button onclick="loadStudentsForAttendance()" class="bg-primary-600 text-white rounded-lg py-2 px-4 hover:bg-primary-700 transition duration-200 w-full text-sm sm:text-base">
+                        عرض الطلاب
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                #
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                اسم الطالب
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                حالة الحضور
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendanceTableBody" class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td colspan="3" class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">الرجاء اختيار فصل دراسي وتاريخ لعرض الطلاب.</td>
+                        </tr>
+                        </tbody>
+                </table>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 flex items-center justify-end border-t border-gray-200 sm:px-6">
+                <button onclick="saveAttendance()" class="bg-green-600 text-white rounded-lg py-2 px-6 hover:bg-green-700 transition duration-200">
+                    حفظ الحضور والغياب
+                </button>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    // بيانات افتراضية (في تطبيق حقيقي ستأتي من قاعدة بيانات)
+    const studentsData = [
+        { id: 1, name: "محمد علي", classroomId: 101 },
+        { id: 2, name: "سارة خالد", classroomId: 101 },
+        { id: 3, name: "أحمد يوسف", classroomId: 101 },
+        { id: 4, name: "نور سعيد", classroomId: 102 },
+        { id: 5, name: "علياء محمود", classroomId: 102 },
+        { id: 6, name: "فاطمة ناصر", classroomId: 103 }
+    ];
+
+    const classroomsData = [
+        { id: 101, name: "فصل الأوائل - أ" },
+        { id: 102, name: "فصل التميز - ب" },
+        { id: 103, name: "فصل المتفوقين" }
+    ];
+
+    // تخزين بيانات الحضور مؤقتًا (في تطبيق حقيقي، ستُحفظ في قاعدة بيانات)
+    // Key: "date_classroomId", Value: { studentId: "present" / "absent" / "late" }
+    let attendanceRecords = {};
+
+    // ملء قائمة الفصول الدراسية المنسدلة
+    function populateClassroomsDropdown() {
+        const dropdown = document.getElementById('classroomId');
+        classroomsData.forEach(classroom => {
+            const option = document.createElement('option');
+            option.value = classroom.id;
+            option.textContent = classroom.name;
+            dropdown.appendChild(option);
+        });
+    }
+
+    // تحميل الطلاب للفصل والتاريخ المحدد
+    function loadStudentsForAttendance() {
+        const selectedClassroomId = document.getElementById('classroomId').value;
+        const selectedDate = document.getElementById('attendanceDate').value;
+        const tbody = document.getElementById('attendanceTableBody');
+        tbody.innerHTML = ''; // مسح الجدول القديم
+
+        if (!selectedClassroomId || !selectedDate) {
+            tbody.innerHTML = `<tr><td colspan="3" class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">الرجاء اختيار فصل دراسي وتاريخ لعرض الطلاب.</td></tr>`;
+            return;
+        }
+
+        const classStudents = studentsData.filter(student => student.classroomId == selectedClassroomId);
+
+        if (classStudents.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="3" class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">لا يوجد طلاب في هذا الفصل.</td></tr>`;
+            return;
+        }
+
+        const recordKey = `${selectedDate}_${selectedClassroomId}`;
+        const currentAttendance = attendanceRecords[recordKey] || {};
+
+        classStudents.forEach((student, index) => {
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-gray-50';
+            
+            // تحديد الحالة الافتراضية أو المحفوظة
+            const initialStatus = currentAttendance[student.id] || 'present'; // افتراضيًا حاضر
+
+            tr.innerHTML = `
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${index + 1}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${student.name}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                    <div class="flex items-center space-x-4 space-x-reverse">
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="status_${student.id}" value="present" ${initialStatus === 'present' ? 'checked' : ''} class="form-radio text-green-600 h-4 w-4">
+                            <span class="ml-2 text-gray-700">حاضر</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="status_${student.id}" value="absent" ${initialStatus === 'absent' ? 'checked' : ''} class="form-radio text-red-600 h-4 w-4">
+                            <span class="ml-2 text-gray-700">غائب</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="status_${student.id}" value="late" ${initialStatus === 'late' ? 'checked' : ''} class="form-radio text-yellow-600 h-4 w-4">
+                            <span class="ml-2 text-gray-700">متأخر</span>
+                        </label>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // حفظ بيانات الحضور
+    function saveAttendance() {
+        const selectedClassroomId = document.getElementById('classroomId').value;
+        const selectedDate = document.getElementById('attendanceDate').value;
+
+        if (!selectedClassroomId || !selectedDate) {
+            alert('الرجاء اختيار فصل دراسي وتاريخ قبل الحفظ.');
+            return;
+        }
+
+        const classStudents = studentsData.filter(student => student.classroomId == selectedClassroomId);
+        if (classStudents.length === 0) {
+            alert('لا يوجد طلاب لتسجيل حضورهم/غيابهم في هذا الفصل.');
+            return;
+        }
+
+        const recordKey = `${selectedDate}_${selectedClassroomId}`;
+        let dailyAttendance = {};
+
+        classStudents.forEach(student => {
+            const statusRadios = document.querySelectorAll(`input[name="status_${student.id}"]:checked`);
+            if (statusRadios.length > 0) {
+                dailyAttendance[student.id] = statusRadios[0].value;
+            }
+        });
+
+        attendanceRecords[recordKey] = dailyAttendance;
+        alert('تم حفظ بيانات الحضور والغياب بنجاح!');
+        console.log("Attendance Records:", attendanceRecords); // لعرض البيانات في الكونسول
+    }
+
+    // عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+        populateClassroomsDropdown();
+        // تعيين التاريخ الافتراضي لليوم الحالي
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months start at 0!
+        const dd = String(today.getDate()).padStart(2, '0');
+        document.getElementById('attendanceDate').value = `${yyyy}-${mm}-${dd}`;
+    });
+</script>
+</body>
+</html>
+</body>
+</html>  

@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نظام إدارة المدرسة - لوحة التحكم</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff', 100: '#e0f2fe', 200: '#bae6fd', 300: '#7dd3fc', 400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1', 800: '#075985', 900: '#0c4a6e',
+            },
+            secondary: {
+              50: '#f5f3ff', 100: '#ede9fe', 200: '#ddd6fe', 300: '#c4b5fd', 400: '#a78bfa', 500: '#8b5cf6', 600: '#7c3aed', 700: '#6d28d9', 800: '#5b21b6', 900: '#4c1d95',
+            },
+            dark: '#1e293b',
+            light: '#f8fafc'
+          },
+          fontFamily: {
+            sans: ['Tajawal', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* Custom CSS for sidebar transition */
+    @media (max-width: 1023px) { /* For screens smaller than lg breakpoint */
+      .sidebar {
+        transform: translateX(100%); /* Starts off-screen to the right for RTL */
+        transition: transform 0.3s ease-out;
+        position: fixed; /* Keep it fixed when scrolled */
+        top: 0;
+        right: 0; /* Position to the right for RTL */
+        height: 100%;
+        z-index: 50; /* Ensure it's above other content */
+      }
+      .sidebar.open {
+        transform: translateX(0); /* Slides in */
+      }
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 40;
+        display: none;
+      }
+      .overlay.show {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <div class="flex h-screen">
+
+    <div id="sidebar-overlay" class="overlay lg:hidden"></div>
+
+   
+    
+
+      <aside id="sidebar" class="w-64 bg-dark text-light flex flex-col shadow-lg lg:relative">
+      <div class="p-4 text-2xl font-bold border-b border-gray-700 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 ml-2 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path d="M12 14l9-5-9-5-9 5 9 5z" />
+          <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+        </svg>
+        نظام المدرسة
+      </div>
+
+      <nav class="flex-1 p-4 space-y-2">
+        <a href="index.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
+          لوحة التحكم
+        </a>
+        <a href="الطلاب.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          الطلاب
+        </a>
+        <a href="المعلمي.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          المعلمين
+        </a>
+        <a href="الفصول الدراسيه.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+          الفصول الدراسية
+        </a>
+        <a href="السنوات الدراسيه.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          السنوات الدراسية
+        </a>
+        <a href="الحضور و الغياب .html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+          الحضور والغياب
+        </a>
+         <a href="الاداره الماليه.html" class="block py-3 px-4 rounded bg-primary-700 text-white font-medium transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          الإدارة المالية
+        </a>
+        <a href="نتائج الطلاب.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          نتائج الطلاب
+        </a>
+      </nav>
+
+      <div class="p-4 border-t border-gray-700 text-sm text-gray-400">
+        &copy; 2025 نظام إدارة المدارس
+      </div>
+    </aside>
+
+  <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإدارة المالية</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* تعريف الألوان الأساسية */
+        .bg-primary-600 { background-color: #4F46E5; } /* بنفسجي */
+        .hover:bg-primary-700:hover { background-color: #4338CA; }
+        .focus:ring-primary-500:focus { --tw-ring-color: #6366F1; }
+        .text-primary-600 { color: #4F46E5; }
+        .hover:text-primary-900:hover { color: #3730A3; }
+        .border-primary-500 { border-color: #6366F1; }
+        .bg-primary-50 { background-color: #EEF2FF; }
+        .text-dark { color: #1F2937; } /* لون نص داكن للعنوان */
+
+        /* ألوان خاصة بالإدارة المالية */
+        .bg-green-100-light { background-color: #D1FAE5; } /* فاتح للأخضر */
+        .text-green-800-dark { color: #065F46; }
+        .bg-red-100-light { background-color: #FEE2E2; } /* فاتح للأحمر */
+        .text-red-800-dark { color: #991B1B; }
+        .bg-blue-100-light { background-color: #DBEAFE; } /* فاتح للأزرق */
+        .text-blue-800-dark { color: #1E40AF; }
+        /* أنماط خاصة بأزرار التبديل */
+        
+    </style>
+</head>
+<body class="bg-gray-100 flex h-screen">
+
+   
+
+    <main class="flex-1 p-6 overflow-y-auto">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-2xl font-bold text-dark">الإدارة المالية</h1>
+                <p class="text-gray-600">تتبع الإيرادات والمصروفات، وإدارة التدفقات النقدية</p>
+            </div>
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <button onclick="openSetAnnualFeesModal()" class="bg-blue-600 text-white rounded-lg py-2 px-4 hover:bg-blue-700 transition duration-200 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.608 3.292 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    تحديد رسوم الصفوف
+                </button>
+                <button onclick="openAddIncomeModal()" class="bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700 transition duration-200 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    إضافة إيراد
+                </button>
+                <button onclick="openAddExpenseModal()" class="bg-red-600 text-white rounded-lg py-2 px-4 hover:bg-red-700 transition duration-200 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    إضافة مصروف
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-green-100-light p-6 rounded-lg shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-green-800-dark">إجمالي الإيرادات</p>
+                    <p id="totalIncome" class="text-3xl font-bold text-green-800-dark mt-1">0.00 د.ل</p>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c1.657 0 3 .895 3 2s-1.343 2-3 2m0-3c1.11 0 2.08.402 2.593 1L17.5 7.5m-3.207 4.293a1 1 0 00-.001 1.414A5.996 5.996 0 0012 16c-1.657 0-3-.895-3-2s1.343-2 3-2m0 3c-1.11 0-2.08-.402-2.593-1L6.5 16.5m3.207-4.293a1 1 0 010-1.414A5.996 5.996 0 0112 8c1.657 0 3-.895 3-2s-1.343-2-3-2" />
+                </svg>
+            </div>
+
+            <div class="bg-red-100-light p-6 rounded-lg shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-red-800-dark">إجمالي المصروفات</p>
+                    <p id="totalExpense" class="text-3xl font-bold text-red-800-dark mt-1">0.00 د.ل</p>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+
+            <div class="bg-blue-100-light p-6 rounded-lg shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-blue-800-dark">الرصيد الحالي</p>
+                    <p id="currentBalance" class="text-3xl font-bold text-blue-800-dark mt-1">0.00 د.ل</p>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M18 6l-3 1m0 0l3 9a5.002 5.002 0 01-6.001 0M18 7l-3 9m-9-9h.01M12 12h.01M12 7h.01M12 17h.01M12 21h.01" />
+                </svg>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
+            <h2 class="text-lg font-semibold text-dark p-6 pb-0">سجل الإيرادات</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                #
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                التاريخ
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                الوصف
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                المبلغ (د.ل)
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                الفئة
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                الطالب/الصف (إن وجد)
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                الإجراءات
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="incomeTableBody" class="bg-white divide-y divide-gray-200">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <h2 class="text-lg font-semibold text-dark p-6 pb-0">سجل المصروفات</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                #
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                التاريخ
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                الوصف
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                المبلغ (د.ل)
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                الفئة
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                الإجراءات
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="expenseTableBody" class="bg-white divide-y divide-gray-200">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div id="incomeModal" class="fixed z-50 inset-0 overflow-y-auto hidden">
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        <div class="inline-block align-bottom bg-white rounded-lg text-right overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mt-3 text-center sm:mt-0 sm:mr-4 sm:text-right w-full">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4" id="incomeModalTitle">إضافة إيراد جديد</h3>
+                        <form id="incomeForm" class="space-y-4">
+                            <div class="flex justify-center mb-6 border-b border-gray-200 pb-4">
+                                <button type="button" id="generalIncomeBtn" onclick="toggleIncomeType('general')" class="toggle-btn active ml-2">إيراد عام</button>
+                                <button type="button" id="studentIncomeBtn" onclick="toggleIncomeType('student')" class="toggle-btn">إيراد طالب</button>
+                            </div>
+
+                            <div>
+                                <label for="incomeDate" class="block text-sm font-medium text-gray-700">التاريخ</label>
+                                <input type="date" id="incomeDate" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                            </div>
+                            <div id="generalIncomeFields">
+                                <div>
+                                    <label for="incomeDescription" class="block text-sm font-medium text-gray-700">الوصف</label>
+                                    <input type="text" id="incomeDescription" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                                </div>
+                                <div>
+                                    <label for="incomeAmount" class="block text-sm font-medium text-gray-700">المبلغ (د.ل)</label>
+                                    <input type="number" id="incomeAmount" step="0.01" min="0" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                                </div>
+                                <div>
+                                    <label for="incomeCategory" class="block text-sm font-medium text-gray-700">الفئة</label>
+                                    <select id="incomeCategory" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                                        <option value="تبرعات">تبرعات</option>
+                                        <option value="أنشطة">أنشطة</option>
+                                        <option value="أخرى">أخرى</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="studentIncomeFields" class="hidden space-y-4">
+                                <div>
+                                    <label for="studentIncomeGrade" class="block text-sm font-medium text-gray-700">الصف الدراسي</label>
+                                    <select id="studentIncomeGrade" onchange="populateStudentsDropdown(); updateStudentFees();" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                                        <option value="">اختر صفاً دراسياً</option>
+                                        </select>
+                                </div>
+                                <div>
+                                    <label for="studentId" class="block text-sm font-medium text-gray-700">اسم الطالب</label>
+                                    <select id="studentId" onchange="updateStudentInfo();" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                                        <option value="">اختر طالبًا</option>
+                                        </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">الفصل الدراسي</label>
+                                    <input type="text" id="studentClassroom" class="mt-1 block w-full bg-gray-100 border border-gray-300 rounded-md shadow-sm py-2 px-3" readonly>
+                                </div>
+                                <div>
+                                    <label for="studentFees" class="block text-sm font-medium text-gray-700">الرسوم المستحقة (د.ل)</label>
+                                    <input type="number" id="studentFees" step="0.01" min="0" class="mt-1 block w-full bg-gray-100 border border-gray-300 rounded-md shadow-sm py-2 px-3" readonly>
+                                </div>
+                                <div>
+                                    <label for="paidAmount" class="block text-sm font-medium text-gray-700">المبلغ المدفوع (د.ل)</label>
+                                    <input type="number" id="paidAmount" step="0.01" min="0" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                                </div>
+                                <div>
+                                    <label for="studentIncomeDescription" class="block text-sm font-medium text-gray-700">وصف إضافي (اختياري)</label>
+                                    <input type="text" id="studentIncomeDescription" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" onclick="saveIncome()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary-600 text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    حفظ
+                </button>
+                <button type="button" onclick="closeIncomeModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="expenseModal" class="fixed z-50 inset-0 overflow-y-auto hidden">
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        <div class="inline-block align-bottom bg-white rounded-lg text-right overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mt-3 text-center sm:mt-0 sm:mr-4 sm:text-right w-full">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4" id="expenseModalTitle">إضافة مصروف جديد</h3>
+                        <form id="expenseForm" class="space-y-4">
+                            <div>
+                                <label for="expenseDate" class="block text-sm font-medium text-gray-700">التاريخ</label>
+                                <input type="date" id="expenseDate" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                            </div>
+                            <div>
+                                <label for="expenseDescription" class="block text-sm font-medium text-gray-700">الوصف</label>
+                                <input type="text" id="expenseDescription" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                            </div>
+                            <div>
+                                <label for="expenseAmount" class="block text-sm font-medium text-gray-700">المبلغ (د.ل)</label>
+                                <input type="number" id="expenseAmount" step="0.01" min="0" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                            </div>
+                            <div>
+                                <label for="expenseCategory" class="block text-sm font-medium text-gray-700">الفئة</label>
+                                <select id="expenseCategory" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                    <option value="رواتب">رواتب</option>
+                                    <option value="إيجار">إيجار</option>
+                                    <option value="لوازم مدرسية">لوازم مدرسية</option>
+                                    <option value="صيانة">صيانة</option>
+                                    <option value="فواتير">فواتير</option>
+                                    <option value="أخرى">أخرى</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" onclick="saveExpense()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary-600 text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    حفظ
+                </button>
+                <button type="button" onclick="closeExpenseModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="setAnnualFeesModal" class="fixed z-50 inset-0 overflow-y-auto hidden">
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        <div class="inline-block align-bottom bg-white rounded-lg text-right overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mt-3 text-center sm:mt-0 sm:mr-4 sm:text-right w-full">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">تحديد رسوم الصفوف الدراسية</h3>
+                        <form id="annualFeesForm" class="space-y-4">
+                            <div>
+                                <label for="feeGrade" class="block text-sm font-medium text-gray-700">الصف الدراسي</label>
+                                <select id="feeGrade" onchange="loadAnnualFee()" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                                    <option value="">اختر صفاً دراسياً</option>
+                                    </select>
+                            </div>
+                            <div>
+                                <label for="annualFeeAmount" class="block text-sm font-medium text-gray-700">الرسوم السنوية (د.ل)</label>
+                                <input type="number" id="annualFeeAmount" step="0.01" min="0" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                            </div>
+                            <button type="button" onclick="saveAnnualFee()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary-600 text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm">
+                                حفظ الرسوم
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" onclick="closeSetAnnualFeesModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    إغلاق
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // بيانات افتراضية
+    let incomes = [
+        { id: 1, date: "2024-06-01", description: "رسوم فصل 101 - الصف الأول", amount: 1500, category: "رسوم دراسية", type: "student", studentId: 1, gradeLevelId: 1 },
+        { id: 2, date: "2024-06-05", description: "تبرع من ولي أمر", amount: 500, category: "تبرعات", type: "general" },
+        { id: 3, date: "2024-06-10", description: "رسوم فصل 102 - الصف الثاني", amount: 1200, category: "رسوم دراسية", type: "student", studentId: 4, gradeLevelId: 2 }
+    ];
+
+    let expenses = [
+        { id: 1, date: "2024-06-02", description: "راتب المعلمة فاطمة", amount: 800, category: "رواتب" },
+        { id: 2, date: "2024-06-07", description: "إيجار مبنى المدرسة", amount: 1000, category: "إيجار" },
+        { id: 3, date: "2024-06-12", description: "شراء لوازم مكتبية", amount: 150, category: "لوازم مدرسية" }
+    ];
+
+    // بيانات الصفوف الدراسية
+    const gradeLevelsData = [
+        { id: 1, name: "الصف الأول" },
+        { id: 2, name: "الصف الثاني" },
+        { id: 3, name: "الصف الثالث" },
+        { id: 4, name: "الصف الرابع" },
+        { id: 5, name: "الصف الخامس" }
+    ];
+
+    // بيانات الطلاب (تم إضافة gradeLevelId)
+    const studentsData = [
+        { id: 1, name: "محمد علي", classroomId: 101, gradeLevelId: 1, className: "فصل الأوائل - أ" },
+        { id: 2, name: "سارة خالد", classroomId: 101, gradeLevelId: 1, className: "فصل الأوائل - أ" },
+        { id: 3, name: "أحمد يوسف", classroomId: 101, gradeLevelId: 2, className: "فصل الأوائل - أ" },
+        { id: 4, name: "نور سعيد", classroomId: 102, gradeLevelId: 2, className: "فصل التميز - ب" },
+        { id: 5, name: "علياء محمود", classroomId: 102, gradeLevelId: 3, className: "فصل التميز - ب" },
+        { id: 6, name: "فاطمة ناصر", classroomId: 103, gradeLevelId: 3, className: "فصل المتفوقين" }
+    ];
+
+    // رسوم الصفوف الدراسية (يتم تحديثها من خلال واجهة المستخدم)
+    let annualFees = [
+        { gradeLevelId: 1, amount: 2000 },
+        { gradeLevelId: 2, amount: 2500 },
+        { gradeLevelId: 3, amount: 3000 }
+    ];
+
+    // متغيرات لتخزين ID العنصر الذي يتم تعديله
+    let currentIncomeId = null;
+    let currentExpenseId = null;
+    let currentIncomeType = 'general'; // لتتبع ما إذا كان الإيراد عام أو لطالب
+
+    // --- تحديث لوحة التحكم المالية ---
+    function updateFinancialSummary() {
+        const totalIncome = incomes.reduce((sum, item) => sum + item.amount, 0);
+        const totalExpense = expenses.reduce((sum, item) => sum + item.amount, 0);
+        const currentBalance = totalIncome - totalExpense;
+
+        document.getElementById('totalIncome').textContent = `${totalIncome.toFixed(2)} د.ل`;
+        document.getElementById('totalExpense').textContent = `${totalExpense.toFixed(2)} د.ل`;
+        document.getElementById('currentBalance').textContent = `${currentBalance.toFixed(2)} د.ل`;
+    }
+
+    // --- وظائف إدارة الإيرادات ---
+    function renderIncomesTable() {
+        const tbody = document.getElementById('incomeTableBody');
+        tbody.innerHTML = '';
+        incomes.forEach((income, index) => {
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-gray-50';
+
+            let studentInfo = '';
+            if (income.type === 'student' && income.studentId && income.gradeLevelId) {
+                const student = studentsData.find(s => s.id === income.studentId);
+                const grade = gradeLevelsData.find(g => g.id === income.gradeLevelId);
+                if (student) {
+                    studentInfo = `الطالب: ${student.name} - الصف: ${grade ? grade.name : 'غير محدد'}`;
+                }
+            }
+
+            tr.innerHTML = `
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${index + 1}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${income.date}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${income.description}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-green-700 font-semibold">${income.amount.toFixed(2)}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${income.category}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${studentInfo}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <div class="flex space-x-2 space-x-reverse">
+                        <a href="#" onclick="editIncome(${income.id})" class="text-blue-600 hover:text-blue-900">تعديل</a>
+                        <a href="#" onclick="deleteIncome(${income.id})" class="text-red-600 hover:text-red-900">حذف</a>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+        updateFinancialSummary();
+    }
+
+    function openAddIncomeModal() {
+        document.getElementById('incomeModalTitle').textContent = 'إضافة إيراد جديد';
+        document.getElementById('incomeForm').reset();
+        currentIncomeId = null;
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('incomeDate').value = today;
+        
+        // إعادة تعيين إلى "إيراد عام" عند الفتح
+        toggleIncomeType('general'); 
+        
+        document.getElementById('incomeModal').classList.remove('hidden');
+    }
+
+    function closeIncomeModal() {
+        document.getElementById('incomeModal').classList.add('hidden');
+    }
+
+    // وظيفة للتبديل بين إيراد عام وطالب
+    function toggleIncomeType(type) {
+        currentIncomeType = type;
+        const generalFields = document.getElementById('generalIncomeFields');
+        const studentFields = document.getElementById('studentIncomeFields');
+        const generalBtn = document.getElementById('generalIncomeBtn');
+        const studentBtn = document.getElementById('studentIncomeBtn');
+
+        if (type === 'general') {
+            generalFields.classList.remove('hidden');
+            studentFields.classList.add('hidden');
+            generalBtn.classList.add('active');
+            generalBtn.classList.remove('inactive');
+            studentBtn.classList.remove('active');
+            studentBtn.classList.add('inactive');
+        } else {
+            generalFields.classList.add('hidden');
+            studentFields.classList.remove('hidden');
+            generalBtn.classList.remove('active');
+            generalBtn.classList.add('inactive');
+            studentBtn.classList.add('active');
+            studentBtn.classList.remove('inactive');
+            // عند التبديل لإيراد طالب، قم بملء الصفوف
+            populateGradeLevelsDropdown('studentIncomeGrade');
+            populateStudentsDropdown(); // لضمان مسح قائمة الطلاب
+            updateStudentFees(); // مسح الرسوم والفصل
+            document.getElementById('paidAmount').value = ''; // مسح المبلغ المدفوع
+            document.getElementById('studentIncomeDescription').value = ''; // مسح الوصف
+        }
+    }
+
+    // ملء قائمة الصفوف الدراسية في مودال الإيراد ومودال رسوم الصفوف
+    function populateGradeLevelsDropdown(elementId) {
+        const dropdown = document.getElementById(elementId);
+        dropdown.innerHTML = '<option value="">اختر صفاً دراسياً</option>';
+        gradeLevelsData.forEach(grade => {
+            const option = document.createElement('option');
+            option.value = grade.id;
+            option.textContent = grade.name;
+            dropdown.appendChild(option);
+        });
+    }
+
+    // ملء قائمة الطلاب بناءً على الصف المختار
+    function populateStudentsDropdown() {
+        const studentDropdown = document.getElementById('studentId');
+        const selectedGradeId = document.getElementById('studentIncomeGrade').value;
+        studentDropdown.innerHTML = '<option value="">اختر طالبًا</option>';
+
+        if (selectedGradeId) {
+            const filteredStudents = studentsData.filter(student => student.gradeLevelId == selectedGradeId);
+            filteredStudents.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.id;
+                option.textContent = student.name;
+                studentDropdown.appendChild(option);
+            });
+        }
+        updateStudentInfo(); // تحديث معلومات الطالب بعد تحديث القائمة
+    }
+
+    // تحديث الرسوم والفصل بناءً على الطالب والصف المختار
+    function updateStudentFees() {
+        const selectedGradeId = document.getElementById('studentIncomeGrade').value;
+        const studentFeesInput = document.getElementById('studentFees');
+        
+        if (selectedGradeId) {
+            const annualFee = annualFees.find(fee => fee.gradeLevelId == selectedGradeId);
+            studentFeesInput.value = annualFee ? annualFee.amount.toFixed(2) : '0.00';
+        } else {
+            studentFeesInput.value = '0.00';
+        }
+        document.getElementById('studentClassroom').value = ''; // مسح الفصل عند تغيير الصف
+        document.getElementById('studentId').value = ''; // مسح اختيار الطالب
+    }
+
+    // تحديث معلومات الطالب (الفصل) بناءً على الطالب المختار
+    function updateStudentInfo() {
+        const selectedStudentId = document.getElementById('studentId').value;
+        const studentClassroomInput = document.getElementById('studentClassroom');
+        
+        if (selectedStudentId) {
+            const student = studentsData.find(s => s.id == selectedStudentId);
+            studentClassroomInput.value = student ? student.className : '';
+        } else {
+            studentClassroomInput.value = '';
+        }
+    }
+
+    function saveIncome() {
+        const date = document.getElementById('incomeDate').value;
+        
+        if (!date) {
+            alert('الرجاء إدخال التاريخ.');
+            return;
+        }
+
+        let description, amount, category, studentId = null, gradeLevelId = null, type = currentIncomeType;
+
+        if (currentIncomeType === 'general') {
+            description = document.getElementById('incomeDescription').value;
+            amount = parseFloat(document.getElementById('incomeAmount').value);
+            category = document.getElementById('incomeCategory').value;
+
+            if (!description || isNaN(amount) || amount <= 0) {
+                alert('الرجاء إدخال جميع حقول الإيراد العام بشكل صحيح.');
+                return;
+            }
+        } else { // type === 'student'
+            gradeLevelId = parseInt(document.getElementById('studentIncomeGrade').value);
+            studentId = parseInt(document.getElementById('studentId').value);
+            amount = parseFloat(document.getElementById('paidAmount').value);
+            description = document.getElementById('studentIncomeDescription').value || 'رسوم دراسية';
+            category = 'رسوم دراسية'; // الفئة ثابتة لرسوم الطلاب
+            
+            if (!gradeLevelId || !studentId || isNaN(amount) || amount <= 0) {
+                alert('الرجاء اختيار الصف والطالب وإدخال المبلغ المدفوع بشكل صحيح لإيراد الطالب.');
+                return;
+            }
+            const student = studentsData.find(s => s.id === studentId);
+            const grade = gradeLevelsData.find(g => g.id === gradeLevelId);
+            if (student) {
+                description = `رسوم دراسية من الطالب: ${student.name} - الصف: ${grade ? grade.name : 'غير محدد'}` + (description === 'رسوم دراسية' ? '' : ` (${description})`);
+            }
+        }
+        
+        const incomeData = { date, description, amount, category, type };
+        if (type === 'student') {
+            incomeData.studentId = studentId;
+            incomeData.gradeLevelId = gradeLevelId;
+        }
+
+        if (currentIncomeId) {
+            const index = incomes.findIndex(item => item.id === currentIncomeId);
+            if (index !== -1) {
+                incomes[index] = { ...incomes[index], ...incomeData };
+                alert('تم تحديث الإيراد بنجاح.');
+            }
+        } else {
+            const newId = incomes.length > 0 ? Math.max(...incomes.map(item => item.id)) + 1 : 1;
+            incomes.push({ id: newId, ...incomeData });
+            alert('تم إضافة إيراد جديد بنجاح.');
+        }
+        renderIncomesTable();
+        closeIncomeModal();
+    }
+
+    function editIncome(id) {
+        const income = incomes.find(item => item.id === id);
+        if (!income) return;
+        
+        document.getElementById('incomeModalTitle').textContent = 'تعديل إيراد';
+        document.getElementById('incomeDate').value = income.date;
+        currentIncomeId = id;
+
+        // تحديد نوع الإيراد وتعبئة الحقول
+        toggleIncomeType(income.type);
+
+        if (income.type === 'general') {
+            document.getElementById('incomeDescription').value = income.description;
+            document.getElementById('incomeAmount').value = income.amount;
+            document.getElementById('incomeCategory').value = income.category;
+        } else { // type === 'student'
+            document.getElementById('studentIncomeGrade').value = income.gradeLevelId;
+            populateStudentsDropdown(); // إعادة ملء قائمة الطلاب بناءً على الصف
+            document.getElementById('studentId').value = income.studentId;
+            updateStudentInfo(); // تحديث معلومات الفصل
+            updateStudentFees(); // تحديث الرسوم المستحقة
+            document.getElementById('paidAmount').value = income.amount;
+            // إزالة الجزء الثابت من الوصف إذا كان موجوداً عند التحرير
+            const student = studentsData.find(s => s.id === income.studentId);
+            const grade = gradeLevelsData.find(g => g.id === income.gradeLevelId);
+            const baseDescription = `رسوم دراسية من الطالب: ${student?.name} - الصف: ${grade?.name || 'غير محدد'}`;
+            let studentDesc = income.description;
+            if (studentDesc.startsWith(baseDescription)) {
+                studentDesc = studentDesc.substring(baseDescription.length).trim();
+                if (studentDesc.startsWith('(') && studentDesc.endsWith(')')) {
+                    studentDesc = studentDesc.substring(1, studentDesc.length - 1);
+                }
+            }
+            document.getElementById('studentIncomeDescription').value = studentDesc === 'رسوم دراسية' ? '' : studentDesc;
+        }
+        
+        document.getElementById('incomeModal').classList.remove('hidden');
+    }
+
+    function deleteIncome(id) {
+        if (confirm('هل أنت متأكد من حذف هذا الإيراد؟')) {
+            incomes = incomes.filter(item => item.id !== id);
+            renderIncomesTable();
+            alert('تم حذف الإيراد بنجاح.');
+        }
+    }
+
+    // --- وظائف إدارة المصروفات (لم تتغير) ---
+    function renderExpensesTable() {
+        const tbody = document.getElementById('expenseTableBody');
+        tbody.innerHTML = '';
+        expenses.forEach((expense, index) => {
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-gray-50';
+            tr.innerHTML = `
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${index + 1}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${expense.date}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${expense.description}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-red-700 font-semibold">${expense.amount.toFixed(2)}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${expense.category}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <div class="flex space-x-2 space-x-reverse">
+                        <a href="#" onclick="editExpense(${expense.id})" class="text-blue-600 hover:text-blue-900">تعديل</a>
+                        <a href="#" onclick="deleteExpense(${expense.id})" class="text-red-600 hover:text-red-900">حذف</a>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+        updateFinancialSummary();
+    }
+
+    function openAddExpenseModal() {
+        document.getElementById('expenseModalTitle').textContent = 'إضافة مصروف جديد';
+        document.getElementById('expenseForm').reset();
+        currentExpenseId = null;
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('expenseDate').value = today;
+        document.getElementById('expenseModal').classList.remove('hidden');
+    }
+
+    function closeExpenseModal() {
+        document.getElementById('expenseModal').classList.add('hidden');
+    }
+
+    function saveExpense() {
+        const date = document.getElementById('expenseDate').value;
+        const description = document.getElementById('expenseDescription').value;
+        const amount = parseFloat(document.getElementById('expenseAmount').value);
+        const category = document.getElementById('expenseCategory').value;
+
+        if (!date || !description || isNaN(amount) || amount <= 0) {
+            alert('الرجاء إدخال جميع حقول المصروف بشكل صحيح.');
+            return;
+        }
+
+        if (currentExpenseId) {
+            const index = expenses.findIndex(item => item.id === currentExpenseId);
+            if (index !== -1) {
+                expenses[index] = { ...expenses[index], date, description, amount, category };
+                alert('تم تحديث المصروف بنجاح.');
+            }
+        } else {
+            const newId = expenses.length > 0 ? Math.max(...expenses.map(item => item.id)) + 1 : 1;
+            expenses.push({ id: newId, date, description, amount, category });
+            alert('تم إضافة مصروف جديد بنجاح.');
+        }
+        renderExpensesTable();
+        closeExpenseModal();
+    }
+
+    function editExpense(id) {
+        const expense = expenses.find(item => item.id === id);
+        if (!expense) return;
+        document.getElementById('expenseModalTitle').textContent = 'تعديل مصروف';
+        document.getElementById('expenseDate').value = expense.date;
+        document.getElementById('expenseDescription').value = expense.description;
+        document.getElementById('expenseAmount').value = expense.amount;
+        document.getElementById('expenseCategory').value = expense.category;
+        currentExpenseId = id;
+        document.getElementById('expenseModal').classList.remove('hidden');
+    }
+
+    function deleteExpense(id) {
+        if (confirm('هل أنت متأكد من حذف هذا المصروف؟')) {
+            expenses = expenses.filter(item => item.id !== id);
+            renderExpensesTable();
+            alert('تم حذف المصروف بنجاح.');
+        }
+    }
+
+    // --- وظائف تحديد رسوم الصفوف ---
+    function openSetAnnualFeesModal() {
+        populateGradeLevelsDropdown('feeGrade'); // ملء قائمة الصفوف في مودال الرسوم
+        document.getElementById('annualFeesForm').reset();
+        document.getElementById('setAnnualFeesModal').classList.remove('hidden');
+    }
+
+    function closeSetAnnualFeesModal() {
+        document.getElementById('setAnnualFeesModal').classList.add('hidden');
+    }
+
+    function loadAnnualFee() {
+        const selectedGradeId = document.getElementById('feeGrade').value;
+        const annualFeeAmountInput = document.getElementById('annualFeeAmount');
+        if (selectedGradeId) {
+            const feeRecord = annualFees.find(fee => fee.gradeLevelId == selectedGradeId);
+            annualFeeAmountInput.value = feeRecord ? feeRecord.amount : '';
+        } else {
+            annualFeeAmountInput.value = '';
+        }
+    }
+
+    function saveAnnualFee() {
+        const selectedGradeId = parseInt(document.getElementById('feeGrade').value);
+        const amount = parseFloat(document.getElementById('annualFeeAmount').value);
+
+        if (!selectedGradeId || isNaN(amount) || amount <= 0) {
+            alert('الرجاء اختيار صف دراسي وإدخال مبلغ الرسوم بشكل صحيح.');
+            return;
+        }
+
+        const feeIndex = annualFees.findIndex(fee => fee.gradeLevelId === selectedGradeId);
+        if (feeIndex !== -1) {
+            annualFees[feeIndex].amount = amount;
+            alert('تم تحديث الرسوم السنوية بنجاح.');
+        } else {
+            annualFees.push({ gradeLevelId: selectedGradeId, amount: amount });
+            alert('تم إضافة الرسوم السنوية بنجاح.');
+        }
+        console.log("Annual Fees (by Grade):", annualFees); // للتحقق في الكونسول
+        closeSetAnnualFeesModal();
+    }
+
+    // --- عند تحميل الصفحة ---
+    document.addEventListener('DOMContentLoaded', function() {
+        renderIncomesTable();
+        renderExpensesTable();
+        updateFinancialSummary();
+        // ضبط نوع الإيراد الافتراضي عند فتح المودال لأول مرة
+        toggleIncomeType('general'); 
+    });
+</script>
+</body>
+</html>
+</body>
+</html>  

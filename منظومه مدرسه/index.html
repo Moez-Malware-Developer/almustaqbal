@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نظام إدارة المدرسة - لوحة التحكم</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff', 100: '#e0f2fe', 200: '#bae6fd', 300: '#7dd3fc', 400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1', 800: '#075985', 900: '#0c4a6e',
+            },
+            secondary: {
+              50: '#f5f3ff', 100: '#ede9fe', 200: '#ddd6fe', 300: '#c4b5fd', 400: '#a78bfa', 500: '#8b5cf6', 600: '#7c3aed', 700: '#6d28d9', 800: '#5b21b6', 900: '#4c1d95',
+            },
+            dark: '#1e293b',
+            light: '#f8fafc'
+          },
+          fontFamily: {
+            sans: ['Tajawal', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* Custom CSS for sidebar transition */
+    @media (max-width: 1023px) { /* For screens smaller than lg breakpoint */
+      .sidebar {
+        transform: translateX(100%); /* Starts off-screen to the right for RTL */
+        transition: transform 0.3s ease-out;
+        position: fixed; /* Keep it fixed when scrolled */
+        top: 0;
+        right: 0; /* Position to the right for RTL */
+        height: 100%;
+        z-index: 50; /* Ensure it's above other content */
+      }
+      .sidebar.open {
+        transform: translateX(0); /* Slides in */
+      }
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 40;
+        display: none;
+      }
+      .overlay.show {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <div class="flex h-screen">
+
+    <div id="sidebar-overlay" class="overlay lg:hidden"></div>
+
+   
+
+   <aside id="sidebar" class="w-64 bg-dark text-light flex flex-col shadow-lg lg:relative">
+      <div class="p-4 text-2xl font-bold border-b border-gray-700 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 ml-2 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path d="M12 14l9-5-9-5-9 5 9 5z" />
+          <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+        </svg>
+        نظام المدرسة
+      </div>
+
+      <nav class="flex-1 p-4 space-y-2">
+        <a href="index.html" class="block py-3 px-4 rounded bg-primary-700 text-white font-medium transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
+          لوحة التحكم
+        </a>
+        <a href="الطلاب.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          الطلاب
+        </a>
+        <a href="المعلمي.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          المعلمين
+        </a>
+        <a href="الفصول الدراسيه.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+          الفصول الدراسية
+        </a>
+        <a href="السنوات الدراسيه.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          السنوات الدراسية
+        </a>
+        <a href="الحضور و الغياب .html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+          الحضور والغياب
+        </a>
+        <a href="الاداره الماليه.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          الإدارة المالية
+        </a>
+        <a href="نتائج الطلاب.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          نتائج الطلاب
+        </a>
+      </nav>
+
+      <div class="p-4 border-t border-gray-700 text-sm text-gray-400">
+        &copy; 2025 نظام إدارة المدارس
+      </div>
+    </aside>
+
+    <main class="flex-1 p-6 overflow-y-auto">
+      <div class="flex justify-between items-center mb-8">
+        <div>
+          <h1 class="text-2xl font-bold text-dark">لوحة التحكم الرئيسية</h1>
+          <p class="text-gray-600">نظرة عامة سريعة على بيانات المدرسة الحالية</p>
+        </div>
+        <div class="flex items-center space-x-4 space-x-reverse">
+          <button id="menu-button" class="lg:hidden p-2 rounded-md text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+          <div class="relative">
+            <input type="text" placeholder="بحث..." class="bg-white border border-gray-300 rounded-lg py-2 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 absolute left-3 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <button class="bg-primary-600 text-white rounded-lg py-2 px-4 hover:bg-primary-700 transition duration-200 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+            إضافة جديد
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition duration-200">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-gray-500 text-sm font-medium">إجمالي الطلاب</p>
+              <p class="text-3xl font-bold text-primary-600 mt-2">1,250</p>
+              <p class="text-green-500 text-xs mt-1 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+                +5.2% عن الشهر الماضي
+              </p>
+            </div>
+            <div class="bg-primary-100 rounded-lg p-3 text-primary-600">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition duration-200">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-gray-500 text-sm font-medium">إجمالي المعلمين</p>
+              <p class="text-3xl font-bold text-secondary-600 mt-2">85</p>
+              <p class="text-green-500 text-xs mt-1 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+                +2.4% عن الشهر الماضي
+              </p>
+            </div>
+            <div class="bg-secondary-100 rounded-lg p-3 text-secondary-600">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition duration-200">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-gray-500 text-sm font-medium">الغياب اليومي</p>
+              <p class="text-3xl font-bold text-amber-600 mt-2">15</p>
+              <p class="text-red-500 text-xs mt-1 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                </svg>
+                +3.1% عن الأمس
+              </p>
+            </div>
+            <div class="bg-amber-100 rounded-lg p-3 text-amber-600">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition duration-200">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-gray-500 text-sm font-medium">الفصول الدراسية</p>
+              <p class="text-3xl font-bold text-emerald-600 mt-2">30</p>
+              <p class="text-gray-500 text-xs mt-1">بدون تغيير عن الفصل الماضي</p>
+            </div>
+            <div class="bg-emerald-100 rounded-lg p-3 text-emerald-600">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 lg:col-span-2">
+          <h2 class="text-lg font-semibold text-dark mb-4">آخر الأنشطة</h2>
+          <div class="space-y-4">
+            <div class="flex items-start">
+              <div class="flex-shrink-0 bg-primary-100 text-primary-600 rounded-lg p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div class="mr-3 flex-1">
+                <p class="text-gray-800 font-medium">تم تسجيل حضور <span class="font-bold text-primary-600">1200 طالب</span> اليوم.</p>
+                <p class="text-gray-500 text-sm mt-1">منذ 10 دقائق</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <div class="flex-shrink-0 bg-emerald-100 text-emerald-600 rounded-lg p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div class="mr-3 flex-1">
+                <p class="text-gray-800 font-medium">تمت الموافقة على طلب إجازة المعلم <span class="font-bold text-emerald-600">أحمد محمود</span>.</p>
+                <p class="text-gray-500 text-sm mt-1">منذ ساعة واحدة</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <div class="flex-shrink-0 bg-amber-100 text-amber-600 rounded-lg p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <div class="mr-3 flex-1">
+                <p class="text-gray-800 font-medium">تذكير: آخر موعد لدفع رسوم الطلاب الأسبوع القادم.</p>
+                <p class="text-gray-500 text-sm mt-1">أمس</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <div class="flex-shrink-0 bg-purple-100 text-purple-600 rounded-lg p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+              </div>
+              <div class="mr-3 flex-1">
+                <p class="text-gray-800 font-medium">تم نشر جدول الحصص الجديد للفصل الدراسي الثاني.</p>
+                <p class="text-gray-500 text-sm mt-1">22 يونيو 2025</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <h2 class="text-lg font-semibold text-dark mb-4">الإشعارات المهمة</h2>
+          <div class="space-y-4">
+            <div class="p-4 bg-blue-50 rounded-lg border border-blue-100">
+              <div class="flex items-start">
+                <div class="flex-shrink-0 text-blue-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div class="mr-2">
+                  <p class="text-sm font-medium text-blue-800">اجتماع أولياء الأمور يوم الثلاثاء القادم</p>
+                </div>
+              </div>
+            </div>
+            <div class="p-4 bg-amber-50 rounded-lg border border-amber-100">
+              <div class="flex items-start">
+                <div class="flex-shrink-0 text-amber-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                </div>
+                <div class="mr-2">
+                  <p class="text-sm font-medium text-amber-800">آخر موعد لتسليم المشاريع الطلابية 30 يونيو</p>
+                </div>
+              </div>
+            </div>
+            <div class="p-4 bg-purple-50 rounded-lg border border-purple-100">
+              <div class="flex items-start">
+                <div class="flex-shrink-0 text-purple-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div class="mr-2">
+                  <p class="text-sm font-medium text-purple-800">بداية اختبارات نهاية الفصل 15 يوليو</p>
+                </div>
+              </div>
+            </div>
+            <div class="p-4 bg-green-50 rounded-lg border border-green-100">
+              <div class="flex items-start">
+                <div class="flex-shrink-0 text-green-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div class="mr-2">
+                  <p class="text-sm font-medium text-green-800">تم تحديث نظام إدارة المدرسة بنجاح</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h2 class="text-lg font-semibold text-dark mb-4">متوسط الحضور الشهري</h2>
+            <div class="h-64"> <canvas id="monthlyAttendanceChart"></canvas>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h2 class="text-lg font-semibold text-dark mb-4">توزيع درجات الطلاب</h2>
+            <div class="h-64"> <canvas id="gradeDistributionChart"></canvas>
+            </div>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+    // Sidebar toggle functionality
+    const menuButton = document.getElementById('menu-button');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+    function toggleSidebar() {
+      sidebar.classList.toggle('open');
+      sidebarOverlay.classList.toggle('show');
+    }
+
+    menuButton.addEventListener('click', toggleSidebar);
+    sidebarOverlay.addEventListener('click', toggleSidebar); // Close sidebar when clicking outside
+
+    // Chart.js data for monthly attendance
+    const monthlyAttendanceCtx = document.getElementById('monthlyAttendanceChart').getContext('2d');
+    new Chart(monthlyAttendanceCtx, {
+      type: 'line',
+      data: {
+        labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+        datasets: [{
+          label: 'متوسط الحضور الشهري (%)',
+          data: [95, 92, 94, 96, 93, 97],
+          backgroundColor: 'rgba(14, 165, 233, 0.1)',
+          borderColor: 'rgb(14, 165, 233)',
+          borderWidth: 2,
+          fill: true,
+          tension: 0.3,
+          pointBackgroundColor: 'white',
+          pointBorderColor: 'rgb(14, 165, 233)',
+          pointBorderWidth: 2,
+          pointRadius: 4,
+          pointHoverRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              font: {
+                family: 'Tajawal',
+                size: 12
+              },
+              boxWidth: 12,
+              padding: 20
+            }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(30, 41, 59, 0.9)',
+            titleFont: {
+              family: 'Tajawal',
+              size: 14
+            },
+            bodyFont: {
+              family: 'Tajawal',
+              size: 12
+            },
+            padding: 12,
+            cornerRadius: 8,
+            displayColors: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: false,
+            min: 90,
+            max: 100,
+            ticks: {
+              callback: function(value) {
+                return value + '%';
+              },
+              font: {
+                family: 'Tajawal'
+              }
+            },
+            grid: {
+              color: 'rgba(226, 232, 240, 1)'
+            }
+          },
+          x: {
+            ticks: {
+              font: {
+                family: 'Tajawal'
+              }
+            },
+            grid: {
+              display: false
+            }
+          }
+        }
+      }
+    });
+
+    // Chart.js data for grade distribution
+    const gradeDistributionCtx = document.getElementById('gradeDistributionChart').getContext('2d');
+    new Chart(gradeDistributionCtx, {
+      type: 'bar',
+      data: {
+        labels: ['ممتاز', 'جيد جداً', 'جيد', 'مقبول', 'ضعيف'],
+        datasets: [{
+          label: 'عدد الطلاب',
+          data: [400, 350, 300, 150, 50],
+          backgroundColor: [
+            'rgba(16, 185, 129, 0.7)',    // emerald for ممتاز
+            'rgba(14, 165, 233, 0.7)', // blue for جيد جداً
+            'rgba(139, 92, 246, 0.7)',    // purple for جيد
+            'rgba(245, 158, 11, 0.7)',    // amber for مقبول
+            'rgba(239, 68, 68, 0.7)'      // red for ضعيف
+          ],
+          borderColor: [
+            'rgba(16, 185, 129, 1)',
+            'rgba(14, 165, 233, 1)',
+            'rgba(139, 92, 246, 1)',
+            'rgba(245, 158, 11, 1)',
+            'rgba(239, 68, 68, 1)'
+          ],
+          borderWidth: 1,
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          },
+          tooltip: {
+            backgroundColor: 'rgba(30, 41, 59, 0.9)',
+            titleFont: {
+              family: 'Tajawal',
+              size: 14
+            },
+            bodyFont: {
+              family: 'Tajawal',
+              size: 12
+            },
+            padding: 12,
+            cornerRadius: 8,
+            displayColors: true
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              font: {
+                family: 'Tajawal'
+              }
+            },
+            grid: {
+              color: 'rgba(226, 232, 240, 1)'
+            }
+          },
+          x: {
+            ticks: {
+              font: {
+                family: 'Tajawal'
+              }
+            },
+            grid: {
+              display: false
+            }
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>  

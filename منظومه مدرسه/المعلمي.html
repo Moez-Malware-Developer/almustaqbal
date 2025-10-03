@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام إدارة المدرسة - الطلاب</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff', 100: '#e0f2fe', 200: '#bae6fd', 300: '#7dd3fc', 400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1', 800: '#075985', 900: '#0c4a6e',
+            },
+            secondary: {
+              50: '#f5f3ff', 100: '#ede9fe', 200: '#ddd6fe', 300: '#c4b5fd', 400: '#a78bfa', 500: '#8b5cf6', 600: '#7c3aed', 700: '#6d28d9', 800: '#5b21b6', 900: '#4c1d95',
+            },
+            dark: '#1e293b',
+            light: '#f8fafc'
+          },
+          fontFamily: {
+            sans: ['Tajawal', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-sans">
+  <div class="flex min-h-screen">
+    <!-- الشريط الجانبي -->
+   <aside id="sidebar" class="w-64 bg-dark text-light flex flex-col shadow-lg lg:relative">
+      <div class="p-4 text-2xl font-bold border-b border-gray-700 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 ml-2 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path d="M12 14l9-5-9-5-9 5 9 5z" />
+          <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+        </svg>
+        نظام المدرسة
+      </div>
+
+      <nav class="flex-1 p-4 space-y-2">
+        <a href="index.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
+          لوحة التحكم
+        </a>
+        <a href="الطلاب.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          الطلاب
+        </a>
+        <a href="المعلمي.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          المعلمين
+        </a>
+        <a href="الفصول الدراسيه.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+          الفصول الدراسية
+        </a>
+        <a href="السنوات الدراسيه.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          السنوات الدراسية
+        </a>
+        <a href="الحضور و الغياب .html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+          الحضور والغياب
+        </a>
+        <a href="الاداره الماليه.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          الإدارة المالية
+        </a>
+        <a href="نتائج الطلاب.html" class="block py-3 px-4 rounded hover:bg-gray-700 transition duration-200 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          نتائج الطلاب
+        </a>
+      </nav>
+
+      <div class="p-4 border-t border-gray-700 text-sm text-gray-400">
+        &copy; 2025 نظام إدارة المدارس
+      </div>
+    </aside>
+    <!-- المحتوى الرئيسي -->
+ 
+   <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة المعلمين</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* تعريف الألوان الأساسية */
+        .bg-primary-600 { background-color: #4F46E5; } /* بنفسجي */
+        .hover:bg-primary-700:hover { background-color: #4338CA; }
+        .focus:ring-primary-500:focus { --tw-ring-color: #6366F1; }
+        .text-primary-600 { color: #4F46E5; }
+        .hover:text-primary-900:hover { color: #3730A3; }
+        .border-primary-500 { border-color: #6366F1; }
+        .bg-primary-50 { background-color: #EEF2FF; }
+        .text-dark { color: #1F2937; } /* لون نص داكن للعنوان */
+    </style>
+</head>
+<body class="bg-gray-100 flex h-screen">
+
+    
+
+    <main class="flex-1 p-6 overflow-y-auto">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-2xl font-bold text-dark">إدارة المعلمين</h1>
+                <p class="text-gray-600">قائمة بجميع المعلمين المسجلين في النظام</p>
+            </div>
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <div class="relative">
+                    <input type="text" placeholder="بحث..." class="bg-white border border-gray-300 rounded-lg py-2 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 absolute left-3 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+                <button onclick="openAddTeacherModal()" class="bg-primary-600 text-white rounded-lg py-2 px-4 hover:bg-primary-700 transition duration-200 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    إضافة معلم
+                </button>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 mb-6">
+            <h2 class="text-lg font-semibold text-dark mb-4">تصفية المعلمين</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">التخصص</label>
+                    <select id="specializationFilter" class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm">
+                        <option value="">كل التخصصات</option>
+                        <option value="الرياضيات">الرياضيات</option>
+                        <option value="اللغة العربية">اللغة العربية</option>
+                        <option value="العلوم">العلوم</option>
+                        <option value="اللغة الإنجليزية">اللغة الإنجليزية</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">الحالة الوظيفية</label>
+                    <select id="employmentStatusFilter" class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm">
+                        <option value="">كل الحالات</option>
+                        <option value="متفرغ">متفرغ</option>
+                        <option value="دوام جزئي">دوام جزئي</option>
+                        <option value="إجازة">إجازة</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">المرحلة التعليمية</label>
+                    <select id="educationLevelFilter" class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm">
+                        <option value="">كل المراحل</option>
+                        <option value="ابتدائي">ابتدائي</option>
+                        <option value="إعدادي">إعدادي</option>
+                        <option value="ثانوي">ثانوي</option>
+                    </select>
+                </div>
+                <div class="flex items-end">
+                    <button onclick="filterTeachers()" class="bg-primary-600 text-white rounded-lg py-2 px-4 hover:bg-primary-700 transition duration-200 w-full text-sm sm:text-base">
+                        تطبيق التصفية
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                #
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                اسم المعلم
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                التخصص
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                الحالة الوظيفية
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                المرحلة التعليمية
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                سعر الحصة
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                حصص أسبوعية
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                الإجراءات
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="teachersTableBody" class="bg-white divide-y divide-gray-200">
+                        </tbody>
+                </table>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+                <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                    <div>
+                        <p class="text-sm text-gray-700">
+                            عرض
+                            <span id="startItem" class="font-medium">1</span>
+                            إلى
+                            <span id="endItem" class="font-medium">10</span>
+                            من
+                            <span id="totalItems" class="font-medium">50</span>
+                            نتائج
+                        </p>
+                    </div>
+                    <div>
+                        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                <span class="sr-only">السابق</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                            <a href="#" aria-current="page" class="z-10 bg-primary-50 border-primary-500 text-primary-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                1
+                            </a>
+                            <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                2
+                            </a>
+                            <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                3
+                            </a>
+                            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                <span class="sr-only">التالي</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div id="addTeacherModal" class="fixed z-50 inset-0 overflow-y-auto hidden">
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        <div class="inline-block align-bottom bg-white rounded-lg text-right overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mt-3 text-center sm:mt-0 sm:mr-4 sm:text-right w-full">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4" id="modalTitle">إضافة معلم جديد</h3>
+                        <form id="teacherForm" class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="teacherName" class="block text-sm font-medium text-gray-700">الاسم الكامل</label>
+                                    <input type="text" id="teacherName" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                                </div>
+                                <div>
+                                    <label for="specialization" class="block text-sm font-medium text-gray-700">التخصص</label>
+                                    <select id="specialization" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                                        <option value="الرياضيات">الرياضيات</option>
+                                        <option value="اللغة العربية">اللغة العربية</option>
+                                        <option value="العلوم">العلوم</option>
+                                        <option value="اللغة الإنجليزية">اللغة الإنجليزية</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="employmentStatus" class="block text-sm font-medium text-gray-700">الحالة الوظيفية</label>
+                                    <select id="employmentStatus" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                        <option value="متفرغ">متفرغ</option>
+                                        <option value="دوام جزئي">دوام جزئي</option>
+                                        <option value="إجازة">إجازة</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="educationLevel" class="block text-sm font-medium text-gray-700">المرحلة التعليمية</label>
+                                    <select id="educationLevel" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                        <option value="ابتدائي">ابتدائي</option>
+                                        <option value="إعدادي">إعدادي</option>
+                                        <option value="ثانوي">ثانوي</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="lessonPrice" class="block text-sm font-medium text-gray-700">سعر الحصة (بالعملة)</label>
+                                    <input type="number" id="lessonPrice" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500" step="0.01" min="0">
+                                </div>
+                                <div>
+                                    <label for="weeklyLessons" class="block text-sm font-medium text-gray-700">عدد الحصص الأسبوعية</label>
+                                    <input type="number" id="weeklyLessons" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500" min="0">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" onclick="saveTeacher()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary-600 text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    حفظ
+                </button>
+                <button type="button" onclick="closeAddTeacherModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // بيانات المعلمين
+    let teachers = [
+        {
+            id: 1,
+            teacherName: "فاطمة الزهراء",
+            specialization: "الرياضيات",
+            employmentStatus: "متفرغ",
+            educationLevel: "إعدادي",
+            lessonPrice: 50, // سعر الحصة
+            weeklyLessons: 15 // عدد الحصص الأسبوعية
+        },
+        {
+            id: 2,
+            teacherName: "يوسف العلي",
+            specialization: "اللغة العربية",
+            employmentStatus: "متفرغ",
+            educationLevel: "ثانوي",
+            lessonPrice: 60,
+            weeklyLessons: 12
+        },
+        {
+            id: 3,
+            teacherName: "ليلى أحمد",
+            specialization: "العلوم",
+            employmentStatus: "دوام جزئي",
+            educationLevel: "ابتدائي",
+            lessonPrice: 40,
+            weeklyLessons: 8
+        },
+        {
+            id: 4,
+            teacherName: "خالد سعيد",
+            specialization: "اللغة الإنجليزية",
+            employmentStatus: "إجازة",
+            educationLevel: "إعدادي",
+            lessonPrice: 55,
+            weeklyLessons: 0 // لا يوجد حصص أثناء الإجازة
+        }
+    ];
+
+    // عرض المعلمين في الجدول
+    function renderTeachersTable(teachersToRender = teachers) {
+        const tbody = document.getElementById('teachersTableBody');
+        tbody.innerHTML = '';
+        
+        teachersToRender.forEach((teacher, index) => {
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-gray-50';
+            
+            tr.innerHTML = `
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${index + 1}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${teacher.teacherName}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${teacher.specialization}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getEmploymentStatusClass(teacher.employmentStatus)}">
+                        ${teacher.employmentStatus}
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${teacher.educationLevel}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${teacher.lessonPrice}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${teacher.weeklyLessons}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <div class="flex space-x-2 space-x-reverse">
+                        <a href="#" class="text-primary-600 hover:text-primary-900">عرض</a>
+                        <a href="#" onclick="editTeacher(${teacher.id})" class="text-blue-600 hover:text-blue-900">تعديل</a>
+                        <a href="#" onclick="deleteTeacher(${teacher.id})" class="text-red-600 hover:text-red-900">حذف</a>
+                    </div>
+                </td>
+            `;
+            
+            tbody.appendChild(tr);
+        });
+        
+        // تحديث أرقام الصفحات (يمكن تعديلها لدعم التقسيم الفعلي لاحقًا)
+        document.getElementById('startItem').textContent = '1';
+        document.getElementById('endItem').textContent = teachersToRender.length;
+        document.getElementById('totalItems').textContent = teachersToRender.length;
+    }
+
+    // دالة لتحديد لون الحالة الوظيفية
+    function getEmploymentStatusClass(status) {
+        if (status === 'متفرغ') {
+            return 'bg-green-100 text-green-800';
+        } else if (status === 'دوام جزئي') {
+            return 'bg-yellow-100 text-yellow-800';
+        } else { // إجازة أو أي حالة أخرى
+            return 'bg-red-100 text-red-800';
+        }
+    }
+
+    // فتح نافذة إضافة معلم
+    function openAddTeacherModal() {
+        document.getElementById('modalTitle').textContent = 'إضافة معلم جديد';
+        document.getElementById('teacherForm').reset();
+        // تأكد من مسح currentTeacherId عند فتح المودال للإضافة
+        currentTeacherId = null; 
+        document.getElementById('addTeacherModal').classList.remove('hidden');
+    }
+
+    // إغلاق نافذة إضافة معلم
+    function closeAddTeacherModal() {
+        document.getElementById('addTeacherModal').classList.add('hidden');
+    }
+
+    // حفظ المعلم
+    function saveTeacher() {
+        const teacherName = document.getElementById('teacherName').value;
+        const specialization = document.getElementById('specialization').value;
+        const employmentStatus = document.getElementById('employmentStatus').value;
+        const educationLevel = document.getElementById('educationLevel').value;
+        const lessonPrice = parseFloat(document.getElementById('lessonPrice').value); // تحويل إلى رقم
+        const weeklyLessons = parseInt(document.getElementById('weeklyLessons').value); // تحويل إلى عدد صحيح
+        
+        if (!teacherName || isNaN(lessonPrice) || isNaN(weeklyLessons)) {
+            alert('الرجاء إدخال جميع الحقول المطلوبة بشكل صحيح (الاسم، سعر الحصة، وعدد الحصص)');
+            return;
+        }
+        
+        // إذا كنا في وضع التعديل (currentTeacherId موجود)
+        if (typeof currentTeacherId !== 'undefined' && currentTeacherId !== null) {
+            const teacherIndex = teachers.findIndex(t => t.id === currentTeacherId);
+            if (teacherIndex !== -1) {
+                teachers[teacherIndex] = {
+                    ...teachers[teacherIndex],
+                    teacherName,
+                    specialization,
+                    employmentStatus,
+                    educationLevel,
+                    lessonPrice,
+                    weeklyLessons
+                };
+                alert('تم تحديث بيانات المعلم بنجاح');
+            }
+            currentTeacherId = null; // إعادة تعيين لإنهاء وضع التعديل
+        } else { // وضع الإضافة
+            const newTeacher = {
+                id: teachers.length > 0 ? Math.max(...teachers.map(t => t.id)) + 1 : 1,
+                teacherName,
+                specialization,
+                employmentStatus,
+                educationLevel,
+                lessonPrice,
+                weeklyLessons
+            };
+            teachers.push(newTeacher);
+            alert('تم حفظ المعلم بنجاح');
+        }
+        
+        renderTeachersTable();
+        closeAddTeacherModal();
+    }
+
+    // تصفية المعلمين (لم يتم إضافة فلترة لسعر الحصة أو عدد الحصص، يمكن إضافتها لاحقاً)
+    function filterTeachers() {
+        const specializationFilter = document.getElementById('specializationFilter').value;
+        const employmentStatusFilter = document.getElementById('employmentStatusFilter').value;
+        const educationLevelFilter = document.getElementById('educationLevelFilter').value;
+        
+        let filteredTeachers = teachers;
+        
+        if (specializationFilter) {
+            filteredTeachers = filteredTeachers.filter(teacher => teacher.specialization === specializationFilter);
+        }
+        
+        if (employmentStatusFilter) {
+            filteredTeachers = filteredTeachers.filter(teacher => teacher.employmentStatus === employmentStatusFilter);
+        }
+        
+        if (educationLevelFilter) {
+            filteredTeachers = filteredTeachers.filter(teacher => teacher.educationLevel === educationLevelFilter);
+        }
+        
+        renderTeachersTable(filteredTeachers);
+    }
+
+    // تعديل المعلم
+    let currentTeacherId = null; // متغير لتخزين معرف المعلم المراد تعديله
+
+    function editTeacher(id) {
+        const teacher = teachers.find(t => t.id === id);
+        if (!teacher) return;
+        
+        document.getElementById('modalTitle').textContent = 'تعديل بيانات المعلم';
+        document.getElementById('teacherName').value = teacher.teacherName;
+        document.getElementById('specialization').value = teacher.specialization;
+        document.getElementById('employmentStatus').value = teacher.employmentStatus;
+        document.getElementById('educationLevel').value = teacher.educationLevel;
+        document.getElementById('lessonPrice').value = teacher.lessonPrice;
+        document.getElementById('weeklyLessons').value = teacher.weeklyLessons;
+        
+        document.getElementById('addTeacherModal').classList.remove('hidden');
+        
+        currentTeacherId = id; // تخزين معرف المعلم لتعديله لاحقاً
+    }
+
+    // حذف المعلم
+    function deleteTeacher(id) {
+        if (confirm('هل أنت متأكد من حذف هذا المعلم؟')) {
+            teachers = teachers.filter(teacher => teacher.id !== id);
+            renderTeachersTable();
+            alert('تم حذف المعلم بنجاح');
+        }
+    }
+
+    // عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+        renderTeachersTable();
+    });
+</script>
+
+
+   
+
+   
+</body>
+</html>
